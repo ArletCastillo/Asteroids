@@ -127,7 +127,7 @@ namespace Engine
 	{
 		//glClearColor(0.1f, 0.1f, 0.15f, 1.0f)
 		Colors c;
-		glClearColor(c.lightYellow().getR(), c.lightYellow().getG(), c.lightYellow().getB(), c.lightYellow().getA());
+		glClearColor(c.lightYellow().r, c.lightYellow().g, c.lightYellow().b, c.lightYellow().a);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glBegin(GL_LINE_LOOP);
 		glVertex2f(50.0, 50.0);
@@ -139,7 +139,7 @@ namespace Engine
 		
 		system("pause");
 
-		glClearColor(c.lilac().getR(), c.lilac().getG(), c.lilac().getB(), c.lilac().getA());
+		glClearColor(c.lilac().r, c.lilac().g, c.lilac().b, c.lilac().a);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glBegin(GL_LINE_LOOP);
 		glVertex2f(50.0, 50.0);
@@ -151,7 +151,7 @@ namespace Engine
 
 		system("pause");
 
-		glClearColor(c.greenApple().getR(), c.greenApple().getG(), c.greenApple().getB(), c.greenApple().getA());
+		glClearColor(c.greenApple().r, c.greenApple().g, c.greenApple().b, c.greenApple().a);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glBegin(GL_LINE_LOOP);
 		glVertex2f(50.0, 50.0);
@@ -163,7 +163,7 @@ namespace Engine
 
 		system("pause");
 
-		glClearColor(c.babyBlue().getR(), c.babyBlue().getG(), c.babyBlue().getB(), c.babyBlue().getA());
+		glClearColor(c.babyBlue().r, c.babyBlue().g, c.babyBlue().b, c.babyBlue().a);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glBegin(GL_LINE_LOOP);
 		glVertex2f(50.0, 50.0);
@@ -175,7 +175,7 @@ namespace Engine
 
 		system("pause");
 
-		glClearColor(c.orange().getR(), c.orange().getG(), c.orange().getB(), c.orange().getA());
+		glClearColor(c.orange().r, c.orange().g, c.orange().b, c.orange().a);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glBegin(GL_LINE_LOOP);
 		glVertex2f(50.0, 50.0);
