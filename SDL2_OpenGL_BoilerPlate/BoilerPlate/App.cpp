@@ -97,7 +97,7 @@ namespace Engine
 			p.moveBase(Vector2(3, 0));
 			break;
 		default:			
-			SDL_Log("%S was pressed. HEYs", keyBoardEvent.keysym.scancode);
+			SDL_Log("%S was pressed...", keyBoardEvent.keysym.scancode);
 			break;
 		}
 	}
