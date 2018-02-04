@@ -97,7 +97,7 @@ namespace Engine
 			p.moveBase(Vector2(3, 0));
 			break;
 		default:			
-			SDL_Log("%S was pressed.", keyBoardEvent.keysym.scancode);
+			SDL_Log("%S was pressed. HEYs", keyBoardEvent.keysym.scancode);
 			break;
 		}
 	}
@@ -142,7 +142,6 @@ namespace Engine
 	{
 		p.Render();
 		SDL_GL_SwapWindow(m_mainWindow);
-		system("pause");
 	}
 
 	bool App::SDLInit()
