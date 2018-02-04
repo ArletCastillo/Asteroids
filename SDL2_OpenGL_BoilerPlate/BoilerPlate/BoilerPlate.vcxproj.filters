@@ -15,6 +15,9 @@
     </ClCompile>
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Colors.cpp" />
+    <ClCompile Include="Player.cpp">
+      <Filter>Engine\Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.hpp" />
@@ -29,6 +32,9 @@
     </ClInclude>
     <ClInclude Include="Color.hpp" />
     <ClInclude Include="Colors.hpp" />
+    <ClInclude Include="Player.hpp">
+      <Filter>Engine\Header files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

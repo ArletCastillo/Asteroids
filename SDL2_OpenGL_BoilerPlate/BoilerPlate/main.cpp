@@ -1,6 +1,6 @@
 /*
 	@author Arlet Castillo
-	@version v0.0.1
+	@version v-0.0.2
 */
 
 #if _MSC_VER && _DEBUG

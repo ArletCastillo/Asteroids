@@ -2,6 +2,8 @@
 #include <iostream>
 #include <algorithm>
 #include "Colors.hpp"
+#include "Player.hpp"
+#include "Vector2.hpp"
 
 // OpenGL includes
 #include <GL/glew.h>
@@ -11,6 +13,7 @@ namespace Engine
 {
 	const float DESIRED_FRAME_RATE = 60.0f;
 	const float DESIRED_FRAME_TIME = 1.0f / DESIRED_FRAME_RATE;
+	Player p;
 
 	App::App(const std::string& title, const int width, const int height)
 		: m_title(title)
@@ -81,6 +84,18 @@ namespace Engine
 	{		
 		switch (keyBoardEvent.keysym.scancode)
 		{
+		case SDL_SCANCODE_W:
+			p.moveBase(Vector2(0, 3));
+			break;
+		case SDL_SCANCODE_A:
+			p.moveBase(Vector2(-3, 0));
+			break;
+		case SDL_SCANCODE_S:
+			p.moveBase(Vector2(0, -3));
+			break;
+		case SDL_SCANCODE_D:
+			p.moveBase(Vector2(3, 0));
+			break;
 		default:			
 			SDL_Log("%S was pressed.", keyBoardEvent.keysym.scancode);
 			break;
@@ -125,66 +140,8 @@ namespace Engine
 
 	void App::Render()
 	{
-		//glClearColor(0.1f, 0.1f, 0.15f, 1.0f)
-		Colors c;
-		glClearColor(c.lightYellow().r, c.lightYellow().g, c.lightYellow().b, c.lightYellow().a);
-		glClear(GL_COLOR_BUFFER_BIT);
-		glBegin(GL_LINE_LOOP);
-		glVertex2f(50.0, 50.0);
-		glVertex2f(50.0, -50.0);
-		glVertex2f(-50.0, -50.0);
-		glVertex2f(-50.0, 50.0);
-		glEnd();
+		p.Render();
 		SDL_GL_SwapWindow(m_mainWindow);
-		
-		system("pause");
-
-		glClearColor(c.lilac().r, c.lilac().g, c.lilac().b, c.lilac().a);
-		glClear(GL_COLOR_BUFFER_BIT);
-		glBegin(GL_LINE_LOOP);
-		glVertex2f(50.0, 50.0);
-		glVertex2f(50.0, -50.0);
-		glVertex2f(-50.0, -50.0);
-		glVertex2f(-50.0, 50.0);
-		glEnd();
-		SDL_GL_SwapWindow(m_mainWindow);
-
-		system("pause");
-
-		glClearColor(c.greenApple().r, c.greenApple().g, c.greenApple().b, c.greenApple().a);
-		glClear(GL_COLOR_BUFFER_BIT);
-		glBegin(GL_LINE_LOOP);
-		glVertex2f(50.0, 50.0);
-		glVertex2f(50.0, -50.0);
-		glVertex2f(-50.0, -50.0);
-		glVertex2f(-50.0, 50.0);
-		glEnd();
-		SDL_GL_SwapWindow(m_mainWindow);
-
-		system("pause");
-
-		glClearColor(c.babyBlue().r, c.babyBlue().g, c.babyBlue().b, c.babyBlue().a);
-		glClear(GL_COLOR_BUFFER_BIT);
-		glBegin(GL_LINE_LOOP);
-		glVertex2f(50.0, 50.0);
-		glVertex2f(50.0, -50.0);
-		glVertex2f(-50.0, -50.0);
-		glVertex2f(-50.0, 50.0);
-		glEnd();
-		SDL_GL_SwapWindow(m_mainWindow);
-
-		system("pause");
-
-		glClearColor(c.orange().r, c.orange().g, c.orange().b, c.orange().a);
-		glClear(GL_COLOR_BUFFER_BIT);
-		glBegin(GL_LINE_LOOP);
-		glVertex2f(50.0, 50.0);
-		glVertex2f(50.0, -50.0);
-		glVertex2f(-50.0, -50.0);
-		glVertex2f(-50.0, 50.0);
-		glEnd();
-		SDL_GL_SwapWindow(m_mainWindow);
-
 		system("pause");
 	}
 
