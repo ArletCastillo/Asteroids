@@ -85,16 +85,16 @@ namespace Engine
 		switch (keyBoardEvent.keysym.scancode)
 		{
 		case SDL_SCANCODE_W:
-			p.moveBase(Vector2(0, 3));
+			p.moveBase(Vector2(0, 30));
 			break;
 		case SDL_SCANCODE_A:
-			p.moveBase(Vector2(-3, 0));
+			p.moveBase(Vector2(-30, 0));
 			break;
 		case SDL_SCANCODE_S:
-			p.moveBase(Vector2(0, -3));
+			p.moveBase(Vector2(0, -30));
 			break;
 		case SDL_SCANCODE_D:
-			p.moveBase(Vector2(3, 0));
+			p.moveBase(Vector2(30, 0));
 			break;
 		default:			
 			SDL_Log("%S was pressed...", keyBoardEvent.keysym.scancode);
