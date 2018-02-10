@@ -85,16 +85,20 @@ namespace Engine
 		switch (keyBoardEvent.keysym.scancode)
 		{
 		case SDL_SCANCODE_W:
-			p.moveBase(Vector2(0, 30));
+			p.moveBase(Vector2(0, 8));
+			p.activateThruster = true;
 			break;
 		case SDL_SCANCODE_A:
-			p.moveBase(Vector2(-30, 0));
+			p.moveBase(Vector2(-8, 0));
+			p.activateThruster = false;
 			break;
 		case SDL_SCANCODE_S:
-			p.moveBase(Vector2(0, -30));
+			p.moveBase(Vector2(0, -8));
+			p.activateThruster = false;
 			break;
 		case SDL_SCANCODE_D:
-			p.moveBase(Vector2(30, 0));
+			p.moveBase(Vector2(8, 0));
+			p.activateThruster = false;
 			break;
 		default:			
 			SDL_Log("%S was pressed...", keyBoardEvent.keysym.scancode);
@@ -108,6 +112,9 @@ namespace Engine
 		{
 		case SDL_SCANCODE_ESCAPE:
 			OnExit();
+			break;
+		case SDL_SCANCODE_W:
+			p.activateThruster = false;
 			break;
 		default:
 			//DO NOTHING
@@ -140,6 +147,10 @@ namespace Engine
 
 	void App::Render()
 	{
+		//glClearColor(0.1f, 0.1f, 0.15f, 1.0f)
+		Colors c;
+		glClearColor(c.orange().r, c.orange().g, c.orange().b, c.orange().a);
+		glClear(GL_COLOR_BUFFER_BIT);
 		p.Render();
 		SDL_GL_SwapWindow(m_mainWindow);
 	}
