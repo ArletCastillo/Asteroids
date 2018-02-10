@@ -11,12 +11,15 @@ class  Player{
 		Vector2 base;
 
 	public:
+		//public member
+		bool activateThruster;
 		//constructors
 		 Player();
 		 Player(float, float);
 		 //functions
 		 void moveBase(Vector2);
 		 void Render();
+		 void Thruster();
 };
 #endif // !_PLAYER_H_
 
