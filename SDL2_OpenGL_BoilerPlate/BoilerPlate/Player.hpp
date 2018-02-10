@@ -22,6 +22,9 @@ class  Player{
 		 void Render();
 		 void thruster();
 		 void wrap(float&, float, float);
+		 void moveForward();
+		 void rotateLeft();
+		 void rotateRight();
 };
 #endif // !_PLAYER_H_
 
