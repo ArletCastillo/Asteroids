@@ -11,12 +11,30 @@ Player::Player(float _x, float _y) {
 	base = Vector2(_x, _y);
 }
 
-void Player::moveBase(Vector2 _vector) {
-	base.x += _vector.x; 
-	base.y += _vector.y;
+void Player::wrap(float& vertex, float min, float max) {
+	if (vertex < min) {
+		vertex = max - (min - vertex);
+	}
+	if (vertex > max) {
+		vertex = min - (max - vertex);
+	}
 }
 
-void Player::Thruster() {
+void Player::moveBase(Vector2 _vector) {
+	maxWidth = 1136 / 2.0f;
+	halfWidth = -1136 / 2.0f;
+
+	maxHeight = 640 / 2.0f;
+	halfHeight = -640 / 2.0f;
+
+	base.x += _vector.x; 
+	base.y += _vector.y;
+
+	wrap(base.x, halfWidth, maxWidth);
+	wrap(base.y, halfHeight, maxHeight);
+}
+
+void Player::thruster() {
 	glBegin(GL_LINE_LOOP);
 	glVertex2f(-6.0, -7.0);
 	glVertex2f(6.0, -7.0);
@@ -39,7 +57,7 @@ void Player::Render() {
 	glEnd();
 
 	if (activateThruster == true) {
-		Thruster();
+		thruster();
 	}
 
 	

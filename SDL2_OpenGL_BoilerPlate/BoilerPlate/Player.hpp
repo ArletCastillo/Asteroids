@@ -9,6 +9,7 @@ class  Player{
 	private:
 		//member
 		Vector2 base;
+		float maxHeight, maxWidth, halfHeight, halfWidth;
 
 	public:
 		//public member
@@ -19,7 +20,11 @@ class  Player{
 		 //functions
 		 void moveBase(Vector2);
 		 void Render();
-		 void Thruster();
+		 void thruster();
+		 void wrap(float&, float, float);
+		 void moveForward();
+		 void rotateLeft();
+		 void rotateRight();
 };
 #endif // !_PLAYER_H_
 
