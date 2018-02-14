@@ -1,9 +1,9 @@
 #pragma once
+
+static float PI = 3.14159;
+
 class MathUtilities{
 	public:
-		//member
-		const float PI = 3.14159;
-
 		//functions
 		int floatToInt(float); 
 		int floatToEvenInt(float); //Rounds a float to the nearest even integer value.
