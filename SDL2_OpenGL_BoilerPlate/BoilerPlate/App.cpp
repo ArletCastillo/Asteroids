@@ -13,7 +13,7 @@ namespace Engine
 {
 	const float DESIRED_FRAME_RATE = 60.0f;
 	const float DESIRED_FRAME_TIME = 1.0f / DESIRED_FRAME_RATE;
-	Player p;
+	Player ship;
 
 	App::App(const std::string& title, const int width, const int height)
 		: m_title(title)
@@ -86,20 +86,19 @@ namespace Engine
 		switch (keyBoardEvent.keysym.scancode)
 		{
 		case SDL_SCANCODE_W:
-			p.moveBase(Vector2(0, 8));
-			p.activateThruster = true;
+			ship.Move_forward();
+			ship.activateThruster = true;
 			break;
 		case SDL_SCANCODE_A:
-			p.moveBase(Vector2(-8, 0));
-			p.activateThruster = false;
+			ship.activateThruster = false;
+			ship.Rotate_left();
 			break;
 		case SDL_SCANCODE_S:
-			p.moveBase(Vector2(0, -8));
-			p.activateThruster = false;
+			ship.activateThruster = false;
 			break;
 		case SDL_SCANCODE_D:
-			p.moveBase(Vector2(8, 0));
-			p.activateThruster = false;
+			ship.activateThruster = false;
+			ship.Rotate_right();
 			break;
 		default:			
 			SDL_Log("%S was pressed...", keyBoardEvent.keysym.scancode);
@@ -115,7 +114,7 @@ namespace Engine
 			OnExit();
 			break;
 		case SDL_SCANCODE_W:
-			p.activateThruster = false;
+			ship.activateThruster = false;
 			break;
 		default:
 			//DO NOTHING
@@ -152,7 +151,7 @@ namespace Engine
 		Colors c;
 		glClearColor(c.orange().r, c.orange().g, c.orange().b, c.orange().a);
 		glClear(GL_COLOR_BUFFER_BIT);
-		p.Render();
+		ship.Render();
 		SDL_GL_SwapWindow(m_mainWindow);
 	}
 
