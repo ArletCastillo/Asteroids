@@ -4,11 +4,14 @@
 #define _PLAYER_H_
 
 #include "Vector2.hpp"
+#include <vector>
 
 class  Player{
 	private:
 		//members
 		Vector2 base;
+		std::vector<Vector2> shipContainer;
+		std::vector<Vector2> thrusterContainer;
 		float angle, mass;
 		float maxHeight, maxWidth, halfHeight, halfWidth;
 
@@ -17,7 +20,6 @@ class  Player{
 		bool activateThruster;
 		//constructors
 		Player();
-		Player(float, float);
 		//functions
 		void Render();
 		void Thruster();

@@ -3,11 +3,13 @@
 #define _ASTEROID_H_
 
 #include "Vector2.hpp"
+#include <vector>
 
 class  Asteroid{
 	private:
 		//members
 		Vector2 base;
+		std::vector<Vector2> asteroidContainer;
 		float angle, mass;
 		float maxHeight, maxWidth, halfHeight, halfWidth;
 		int smll, medium, big;
@@ -17,7 +19,6 @@ class  Asteroid{
 		bool activateThruster;
 		//constructors
 		Asteroid();
-		Asteroid(float, float);
 		//functions
 		void Render();
 		void Update();
