@@ -4,6 +4,7 @@
 #include "Colors.hpp"
 #include "Player.hpp"
 #include "Vector2.hpp"
+#include "Asteroid.hpp"
 
 // OpenGL includes
 #include <GL/glew.h>
@@ -13,7 +14,8 @@ namespace Engine
 {
 	const float DESIRED_FRAME_RATE = 60.0f;
 	const float DESIRED_FRAME_TIME = 1.0f / DESIRED_FRAME_RATE;
-	Player p;
+	Player ship;
+	Asteroid asteroid;
 
 	App::App(const std::string& title, const int width, const int height)
 		: m_title(title)
@@ -86,6 +88,7 @@ namespace Engine
 		switch (keyBoardEvent.keysym.scancode)
 		{
 		case SDL_SCANCODE_W:
+<<<<<<< HEAD
 			p.moveBase(Vector2(0, 8));
 			p.activateThruster = true;
 			break;
@@ -100,6 +103,21 @@ namespace Engine
 		case SDL_SCANCODE_D:
 			p.moveBase(Vector2(8, 0));
 			p.activateThruster = false;
+=======
+			ship.Move_forward();
+			ship.activateThruster = true;
+			break;
+		case SDL_SCANCODE_A:
+			ship.activateThruster = false;
+			ship.Rotate_left();
+			break;
+		case SDL_SCANCODE_S:
+			ship.activateThruster = false;
+			break;
+		case SDL_SCANCODE_D:
+			ship.activateThruster = false;
+			ship.Rotate_right();
+>>>>>>> feature/v0.0.4
 			break;
 		default:			
 			SDL_Log("%S was pressed...", keyBoardEvent.keysym.scancode);
@@ -115,7 +133,11 @@ namespace Engine
 			OnExit();
 			break;
 		case SDL_SCANCODE_W:
+<<<<<<< HEAD
 			p.activateThruster = false;
+=======
+			ship.activateThruster = false;
+>>>>>>> feature/v0.0.4
 			break;
 		default:
 			//DO NOTHING
@@ -150,9 +172,16 @@ namespace Engine
 	{
 		//glClearColor(0.1f, 0.1f, 0.15f, 1.0f)
 		Colors c;
+<<<<<<< HEAD
 		glClearColor(c.orange().r, c.orange().g, c.orange().b, c.orange().a);
 		glClear(GL_COLOR_BUFFER_BIT);
 		p.Render();
+=======
+		glClearColor(c.Dark_aqua().r, c.Dark_aqua().g, c.Dark_aqua().b, c.Dark_aqua().a);
+		glClear(GL_COLOR_BUFFER_BIT);
+		ship.Render();
+		asteroid.Render();
+>>>>>>> feature/v0.0.4
 		SDL_GL_SwapWindow(m_mainWindow);
 	}
 

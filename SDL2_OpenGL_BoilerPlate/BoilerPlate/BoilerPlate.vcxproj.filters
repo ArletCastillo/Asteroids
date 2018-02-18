@@ -21,6 +21,12 @@
     <ClCompile Include="Vector4.cpp">
       <Filter>Engine\Source files</Filter>
     </ClCompile>
+<<<<<<< HEAD
+=======
+    <ClCompile Include="Asteroid.cpp">
+      <Filter>Engine\Source files</Filter>
+    </ClCompile>
+>>>>>>> feature/v0.0.4
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.hpp" />
@@ -39,6 +45,9 @@
       <Filter>Engine\Header files</Filter>
     </ClInclude>
     <ClInclude Include="Player.hpp">
+      <Filter>Engine\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Asteroid.hpp">
       <Filter>Engine\Header files</Filter>
     </ClInclude>
   </ItemGroup>

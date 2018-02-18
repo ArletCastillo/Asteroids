@@ -1,21 +1,21 @@
 #include "Colors.hpp"
 
-Color Colors::lightYellow() {
-	return Color(220.0f, 20.0f, 0.60f, 1.0f);
+Color Colors::Cherry_blossom() {
+	return Color(0.99f, 0.72f, 0.77f, 1.0f);
 }
 
-Color Colors::babyBlue() {
-	return Color(0.80f, 160.0f, 255.0f, 1.0f);
+Color Colors::Baby_blue() {
+	return Color(0.54f, 0.81f, 0.94f, 1.0f);
 }
 
-Color Colors::lilac() {
-	return Color(200.0f, 0.80f, 150.0f, 1.0f);
+Color Colors::Dark_red() {
+	return Color(0.55f, 0.0f, 0.0f, 1.0f);
 }
 
-Color Colors::greenApple() {
-	return Color(0.80f, 200.0f, 0.0f, 1.0f);
+Color Colors::Dark_aqua() {
+	return Color(0.f, 0.1f, 0.1f, 1.0f);
 }
 
-Color Colors::orange() {
-	return Color(200.0f, 0.80f, 0.0f, 1.0f);
+Color Colors::Midnight() {
+	return Color(0.0f, 0.0f, 0.1f, 1.0f);
 }
