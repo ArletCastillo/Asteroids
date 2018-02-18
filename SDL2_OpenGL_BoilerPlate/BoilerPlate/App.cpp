@@ -151,7 +151,7 @@ namespace Engine
 	{
 		//glClearColor(0.1f, 0.1f, 0.15f, 1.0f)
 		Colors c;
-		glClearColor(c.orange().r, c.orange().g, c.orange().b, c.orange().a);
+		glClearColor(c.Dark_aqua().r, c.Dark_aqua().g, c.Dark_aqua().b, c.Dark_aqua().a);
 		glClear(GL_COLOR_BUFFER_BIT);
 		ship.Render();
 		asteroid.Render();

@@ -7,11 +7,11 @@
 
 class Colors {
 	public:
-		Color lightYellow();
-		Color babyBlue();
-		Color lilac();
-		Color greenApple();
-		Color orange();
+		Color Cherry_blossom();
+		Color Baby_blue();
+		Color Dark_red();
+		Color Dark_aqua();
+		Color Midnight();
 };
 
 #endif // !_COLORS_H_
