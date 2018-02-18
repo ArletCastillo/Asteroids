@@ -4,6 +4,7 @@
 #include "Colors.hpp"
 #include "Player.hpp"
 #include "Vector2.hpp"
+#include "Asteroid.hpp"
 
 // OpenGL includes
 #include <GL/glew.h>
@@ -14,6 +15,7 @@ namespace Engine
 	const float DESIRED_FRAME_RATE = 60.0f;
 	const float DESIRED_FRAME_TIME = 1.0f / DESIRED_FRAME_RATE;
 	Player ship;
+	Asteroid asteroid;
 
 	App::App(const std::string& title, const int width, const int height)
 		: m_title(title)
@@ -152,6 +154,7 @@ namespace Engine
 		glClearColor(c.orange().r, c.orange().g, c.orange().b, c.orange().a);
 		glClear(GL_COLOR_BUFFER_BIT);
 		ship.Render();
+		asteroid.Render();
 		SDL_GL_SwapWindow(m_mainWindow);
 	}
 
