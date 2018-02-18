@@ -13,7 +13,7 @@ Color Colors::Dark_red() {
 }
 
 Color Colors::Dark_aqua() {
-	return Color(0.f, 0.1f, 0.1f, 1.0f);
+	return Color(0.0f, 0.1f, 0.1f, 1.0f);
 }
 
 Color Colors::Midnight() {
