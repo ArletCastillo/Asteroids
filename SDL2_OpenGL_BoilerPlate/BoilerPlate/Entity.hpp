@@ -14,6 +14,7 @@ class Entity{
 
 	public:
 		//functions
+		virtual void Render();
 		void Wrap(float&, float, float);
 		void Move_forward();
 		void Rotate_left();

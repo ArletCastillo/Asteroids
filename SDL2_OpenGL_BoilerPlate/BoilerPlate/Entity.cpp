@@ -2,6 +2,9 @@
 #include <cmath>
 #include "MathUtilities.hpp"
 
+void Entity::Render(){
+}
+
 void Entity::Wrap(float& vertex, float min, float max) {
 	if (vertex < min) {
 		vertex = max - (min - vertex);
