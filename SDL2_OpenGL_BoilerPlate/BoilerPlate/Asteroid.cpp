@@ -7,17 +7,18 @@
 Asteroid::Asteroid() {
 	base = Vector2(0, 0);
 	angle = 0.0f;
-	asteroidContainer.push_back(Vector2(0.0, 10.0));
-	asteroidContainer.push_back(Vector2(9.0, 12.0));
-	asteroidContainer.push_back(Vector2(17.0, 8.0));
-	asteroidContainer.push_back(Vector2(14.0, 5.0));
-	asteroidContainer.push_back(Vector2(17.0, 0.0));
-	asteroidContainer.push_back(Vector2(11.0, -6.0));
-	asteroidContainer.push_back(Vector2(0.0, -8.0));
-	asteroidContainer.push_back(Vector2(-11.0, -6.0));
-	asteroidContainer.push_back(Vector2(-9.0, 0.0));
-	asteroidContainer.push_back(Vector2(-14.0, 6.0));
-	asteroidContainer.push_back(Vector2(-9.0, 13.0));
+	Change_size(BIG);
+	asteroidContainer.push_back(size*Vector2(0.0, 10.0));
+	asteroidContainer.push_back(size*Vector2(9.0, 12.0));
+	asteroidContainer.push_back(size*Vector2(17.0, 8.0));
+	asteroidContainer.push_back(size*Vector2(14.0, 5.0));
+	asteroidContainer.push_back(size*Vector2(17.0, 0.0));
+	asteroidContainer.push_back(size*Vector2(11.0, -6.0));
+	asteroidContainer.push_back(size*Vector2(0.0, -8.0));
+	asteroidContainer.push_back(size*Vector2(-11.0, -6.0));
+	asteroidContainer.push_back(size*Vector2(-9.0, 0.0));
+	asteroidContainer.push_back(size*Vector2(-14.0, 6.0));
+	asteroidContainer.push_back(size*Vector2(-9.0, 13.0));
 }
 
 void Asteroid::Wrap(float& vertex, float min, float max) {
@@ -59,4 +60,9 @@ void Asteroid::Render() {
 	for (int i=0;i<asteroidContainer.size();i++)
 		glVertex2f(asteroidContainer[i].x, asteroidContainer[i].y);
 	glEnd();
+}
+
+void Asteroid::Change_size(int _size) {
+	size = _size;
+
 }

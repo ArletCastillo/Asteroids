@@ -5,6 +5,10 @@
 #include "Vector2.hpp"
 #include <vector>
 
+const int SMALL = 1;
+const int MEDIUM = 2;
+const int BIG = 4;
+
 class  Asteroid{
 	private:
 		//members
@@ -12,7 +16,9 @@ class  Asteroid{
 		std::vector<Vector2> asteroidContainer;
 		float angle, mass;
 		float maxHeight, maxWidth, halfHeight, halfWidth;
-		int smll, medium, big;
+		int size;
+		//private function
+		void Change_size(int);
 
 	public:
 		//public member
