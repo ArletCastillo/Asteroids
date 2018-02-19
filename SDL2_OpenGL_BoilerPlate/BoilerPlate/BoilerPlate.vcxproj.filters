@@ -15,6 +15,9 @@
     <ClCompile Include="Colors.cpp">
       <Filter>Engine\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Engine\Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="MathUtilities.cpp">
       <Filter>Engine\Source Files</Filter>
     </ClCompile>
@@ -44,6 +47,9 @@
     <ClInclude Include="Colors.hpp">
       <Filter>Engine\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Entity.hpp">
+      <Filter>Engine\Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="MathUtilities.hpp">
       <Filter>Engine\Header Files</Filter>
     </ClInclude>
@@ -62,13 +68,13 @@
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
-      <UniqueIdentifier>{c94ca73f-424a-4e58-bdf1-ec36bb4bf4c9}</UniqueIdentifier>
+      <UniqueIdentifier>{3681375c-56fd-466b-b00a-a9f25935d21e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Header Files">
-      <UniqueIdentifier>{db5d3418-7704-4ae6-b840-47698a835ae9}</UniqueIdentifier>
+      <UniqueIdentifier>{faeebe13-09fb-4c14-83c8-7908752127f6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Source Files">
-      <UniqueIdentifier>{63d193a3-286c-4526-a901-8b39d442ac0a}</UniqueIdentifier>
+      <UniqueIdentifier>{7f24a347-14ac-40d6-a1df-07291d0ff1f9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

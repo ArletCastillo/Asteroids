@@ -3,7 +3,6 @@
 #include <algorithm>
 #include "Colors.hpp"
 #include "Player.hpp"
-#include "Vector2.hpp"
 #include "Asteroid.hpp"
 
 // OpenGL includes

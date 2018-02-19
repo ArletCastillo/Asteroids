@@ -3,28 +3,23 @@
 #ifndef _PLAYER_H_
 #define _PLAYER_H_
 
-#include "Vector2.hpp"
+#include <vector>
+#include "Entity.hpp"
 
-class  Player{
+class  Player: public Entity{
 	private:
 		//members
-		Vector2 base;
-		float angle, mass;
-		float maxHeight, maxWidth, halfHeight, halfWidth;
+		std::vector<Vector2> shipContainer;
+		std::vector<Vector2> thrusterContainer;
 
 	public:
 		//public member
 		bool activateThruster;
 		//constructors
 		Player();
-		Player(float, float);
 		//functions
 		void Render();
 		void Thruster();
-		void Wrap(float&, float, float);
-		void Move_forward();
-		void Rotate_left();
-		void Rotate_right();
 };
 #endif // !_PLAYER_H_
 
