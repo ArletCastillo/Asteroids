@@ -5,6 +5,7 @@
 #include "Player.hpp"
 #include "Vector2.hpp"
 #include "Asteroid.hpp"
+#include "Entity.hpp"
 
 // OpenGL includes
 #include <GL/glew.h>
