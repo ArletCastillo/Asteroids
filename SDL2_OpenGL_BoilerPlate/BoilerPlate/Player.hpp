@@ -19,6 +19,7 @@ class  Player: public Entity{
 		Player();
 		//functions
 		void Render();
+		void Update();
 		void Thruster();
 };
 #endif // !_PLAYER_H_

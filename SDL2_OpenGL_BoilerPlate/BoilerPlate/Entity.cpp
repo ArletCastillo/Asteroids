@@ -5,6 +5,9 @@
 void Entity::Render(){
 }
 
+void Entity::Update() {
+}
+
 void Entity::Wrap(float& vertex, float min, float max) {
 	if (vertex < min) {
 		vertex = max - (min - vertex);
