@@ -1,38 +1,69 @@
 #include "Player.hpp"
 #include <SDL2/SDL_opengl.h>
+#include <cmath>
+#include "MathUtilities.hpp"
+
+const float MAXIMUM_SPEED = 350.0f;
+const float ANGLE = 90.0f;
+const float SPEED_X = 10.0f;
+const float SPEED_Y = 10.0f;
+
+void Player::Apply_impulse(Vector2 impulse){
+	if (m_mass > 0) {
+		m_velocity.x += (impulse.x / m_mass) * cosf((m_angle + ANGLE) * (PI / 180));
+		m_velocity.y += (impulse.y / m_mass) * sinf((m_angle + ANGLE) * (PI / 180));
+	}
+}
 
 Player::Player() {
-	base = Vector2(0, 0);
-	angle = 0.0f;
-	//coordenates for the ship
-	shipContainer.push_back(Vector2(0.0, 20.0));
-	shipContainer.push_back(Vector2(12.0, -10.0));
-	shipContainer.push_back(Vector2(6.0, -4.0));
-	shipContainer.push_back(Vector2(-6.0, -4.0));
-	shipContainer.push_back(Vector2(-12.0, -10.0));
-	//coordenates for the thruster
-	thrusterContainer.push_back(Vector2(-6.0, -7.0));
-	thrusterContainer.push_back(Vector2(6.0, -7.0));
-	thrusterContainer.push_back(Vector2(0.0, -15.0));
+	m_base = Vector2(0, 0);
+	m_angle = 0.0f;
+	m_mass = 2.0f;
+	//ship's coordenates
+	m_shipContainer.push_back(Vector2(0.0, 20.0));
+	m_shipContainer.push_back(Vector2(12.0, -10.0));
+	m_shipContainer.push_back(Vector2(6.0, -4.0));
+	m_shipContainer.push_back(Vector2(-6.0, -4.0));
+	m_shipContainer.push_back(Vector2(-12.0, -10.0));
+	//thruster's coordenates
+	m_thrusterContainer.push_back(Vector2(-6.0, -7.0));
+	m_thrusterContainer.push_back(Vector2(6.0, -7.0));
+	m_thrusterContainer.push_back(Vector2(0.0, -15.0));
 }
 
 void Player::Thruster() {
 	glBegin(GL_LINE_LOOP);
-	for (int i = 0; i < thrusterContainer.size(); i++)
-		glVertex2f(thrusterContainer[i].x, thrusterContainer[i].y);
+	for (int i = 0; i < m_thrusterContainer.size(); i++)
+		glVertex2f(m_thrusterContainer[i].x, m_thrusterContainer[i].y);
 	glEnd();
+}
+
+void Player::Move_forward(){
+	Apply_impulse(Vector2(SPEED_X, SPEED_Y));
 }
 
 void Player::Render() {
 	glLoadIdentity();
-	glTranslatef(base.x, base.y, 0.0f);
-	glRotatef(angle, 0.0f, 0.0f, 1.0f);
+	glTranslatef(m_base.x, m_base.y, 0.0f);
+	glRotatef(m_angle, 0.0f, 0.0f, 1.0f);
 	glBegin(GL_LINE_LOOP);
-	for (int i=0;i<shipContainer.size();i++)
-		glVertex2f(shipContainer[i].x, shipContainer[i].y);
+	for (int i=0;i<m_shipContainer.size();i++)
+		glVertex2f(m_shipContainer[i].x, m_shipContainer[i].y);
 	glEnd();
 
 	if (activateThruster == true) {
 		Thruster();
 	}
+}
+
+void Player::Update(float time){
+	//clamping speed as a scalar, since velocity is a vector
+	float speed = fabs(sqrtf(pow(m_velocity.x, 2) + pow(m_velocity.y, 2)));
+	//prevents ship form disappearing because of how fast is moving
+	if (speed > MAXIMUM_SPEED) {
+		m_velocity.x = (m_velocity.x / speed) * MAXIMUM_SPEED;
+		m_velocity.y = (m_velocity.y / speed) * MAXIMUM_SPEED;
+	}
+	m_cSpeed = speed;
+	Entity::Update(time);
 }

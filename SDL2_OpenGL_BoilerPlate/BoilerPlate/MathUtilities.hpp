@@ -1,6 +1,6 @@
 #pragma once
 
-static float PI = 3.14159;
+static double PI = 3.14159;
 
 class MathUtilities{
 	public:

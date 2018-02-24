@@ -12,17 +12,16 @@ const int BIG = 4;
 class  Asteroid: public Entity{
 	private:
 		//members
-		std::vector<Vector2> asteroidContainer;
-		int size;
+		std::vector<Vector2> m_asteroidContainer;
+		int m_size;
 		//private function
 		void Change_size(int);
 
 	public:
-		//constructors
+		//constructor
 		Asteroid();
 		//functions
 		void Render();
-		void Update();
 		int Get_size(); 
 };
 

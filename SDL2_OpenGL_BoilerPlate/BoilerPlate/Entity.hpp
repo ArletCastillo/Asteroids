@@ -8,13 +8,16 @@
 class Entity{
 	protected:
 		//members
-		Vector2 base;
-		float angle, mass;
-		float maxHeight, maxWidth, halfHeight, halfWidth;
+		Vector2 m_base;
+		Vector2 m_velocity;
+		float m_angle, m_mass;
+		float m_maxHeight, m_maxWidth, m_halfHeight, m_halfWidth;
 
 	public:
 		//functions
 		virtual void Render();
+		virtual void Update(float);
+		//virtual void Move_forward();
 		void Wrap(float&, float, float);
 		void Move_forward();
 		void Rotate_left();

@@ -2,36 +2,42 @@
 #include <cmath>
 #include "MathUtilities.hpp"
 
+const int SCREEN_WIDHT = 1136;
+const int SCREEN_HEIGHT = 640;
+
 void Entity::Render(){
 }
 
-void Entity::Wrap(float& vertex, float min, float max) {
-	if (vertex < min) {
-		vertex = max - (min - vertex);
-	}
-	if (vertex > max) {
-		vertex = min - (max - vertex);
-	}
+void Entity::Update(float time){
+	m_base.x += m_velocity.x * static_cast<float>(time);
+	m_base.y += m_velocity.y * static_cast<float>(time);
+
+	m_halfWidth = SCREEN_WIDHT / 2.0f;
+	m_halfHeight = SCREEN_HEIGHT / 2.0f;
+
+	Wrap(m_base.x, -m_halfWidth, m_halfWidth);
+	Wrap(m_base.y, -m_halfHeight, m_halfHeight);
 }
 
-void Entity::Move_forward() {
-	maxWidth = 1136 / 2.0f;
-	halfWidth = -1136 / 2.0f;
+void Entity::Wrap(float& vertex, float min, float max) {
+	if (vertex < min) 
+		vertex = max - (min - vertex);
+	if (vertex > max) 
+		vertex = min + (vertex - max);
+}
 
-	maxHeight = 640 / 2.0f;
-	halfHeight = -640 / 2.0f;
+void Entity::Move_forward(){
+	m_halfWidth = SCREEN_WIDHT / 2.0f;
+	m_halfHeight = SCREEN_HEIGHT / 2.0f;
 
 	MathUtilities realAngle;
-	base += Vector2(8 * sin(realAngle.degToRad(angle)*-1), 8 * cos(realAngle.degToRad(angle)));
-
-	Wrap(base.x, halfWidth, maxWidth);
-	Wrap(base.y, halfHeight, maxHeight);
+	m_base += Vector2(8 * sin(realAngle.degToRad(m_angle)*-1), 8 * cos(realAngle.degToRad(m_angle)));
 }
 
 void Entity::Rotate_left() {
-	angle += 5;
+	m_angle += 5;
 }
 
 void Entity::Rotate_right() {
-	angle -= 5;
+	m_angle -= 5;
 }
