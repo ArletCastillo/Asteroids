@@ -22,8 +22,8 @@ class  Player: public Entity{
 		Player();
 		//functions
 		void Move_forward();
-		void Render();
-		void Update(float);
+		void Render() override;
+		void Update(float) override;
 		void Thruster();
 };
 #endif // !_PLAYER_H_

@@ -129,6 +129,7 @@ namespace Engine
 
 		// Update code goes here
 		ship.Update(DESIRED_FRAME_TIME);
+		asteroid.Update(DESIRED_FRAME_TIME);
 
 		double endTime = m_timer->GetElapsedTimeInSeconds();
 		double nextTimeFrame = startTime + DESIRED_FRAME_TIME;

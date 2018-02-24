@@ -14,15 +14,18 @@ class  Asteroid: public Entity{
 		//members
 		std::vector<Vector2> m_asteroidContainer;
 		int m_size;
+		float m_rotation;
 		//private function
 		void Change_size(int);
+		void Apply_impulse(Vector2);
 
 	public:
 		//constructor
 		Asteroid();
 		//functions
-		void Render();
-		int Get_size(); 
+		void Render() override;
+		void Update(float) override;
+		int Get_size();
 };
 
 #endif // !_ASTEROID_H_
