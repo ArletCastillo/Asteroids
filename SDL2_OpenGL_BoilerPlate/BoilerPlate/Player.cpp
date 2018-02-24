@@ -59,6 +59,9 @@ void Player::Render() {
 void Player::Update(float time){
 	//clamping speed as a scalar, since velocity is a vector
 	float speed = fabs(sqrtf(pow(m_velocity.x, 2) + pow(m_velocity.y, 2)));
+
+	m_velocity *= 0.99;
+
 	//prevents ship form disappearing because of how fast is moving
 	if (speed > MAXIMUM_SPEED) {
 		m_velocity.x = (m_velocity.x / speed) * MAXIMUM_SPEED;
