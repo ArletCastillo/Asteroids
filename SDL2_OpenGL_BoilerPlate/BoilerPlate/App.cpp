@@ -13,8 +13,6 @@ namespace Engine
 {
 	const float DESIRED_FRAME_RATE = 60.0f;
 	const float DESIRED_FRAME_TIME = 1.0f / DESIRED_FRAME_RATE;
-	Player ship;
-	Asteroid asteroid;
 
 	App::App(const std::string& title, const int width, const int height)
 		: m_title(title)
@@ -26,7 +24,8 @@ namespace Engine
 	{
 		m_state = GameState::UNINITIALIZED;
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
-
+		m_ship = new Player();
+		m_asteroids.push_back(new Asteroid());
 	}
 
 	App::~App()
@@ -87,19 +86,19 @@ namespace Engine
 		switch (keyBoardEvent.keysym.scancode)
 		{
 		case SDL_SCANCODE_W:
-			ship.Move_forward();
-			ship.activateThruster = true;
+			m_ship->Move_forward();
+			m_ship->activateThruster = true;
 			break;
 		case SDL_SCANCODE_A:
-			ship.activateThruster = false;
-			ship.Rotate_left();
+			m_ship->activateThruster = false;
+			m_ship->Rotate_left();
 			break;
 		case SDL_SCANCODE_S:
-			ship.activateThruster = false;
+			m_ship->activateThruster = false;
 			break;
 		case SDL_SCANCODE_D:
-			ship.activateThruster = false;
-			ship.Rotate_right();
+			m_ship->activateThruster = false;
+			m_ship->Rotate_right();
 			break;
 		default:			
 			SDL_Log("%S was pressed...", keyBoardEvent.keysym.scancode);
@@ -115,7 +114,14 @@ namespace Engine
 			OnExit();
 			break;
 		case SDL_SCANCODE_W:
-			ship.activateThruster = false;
+			m_ship->activateThruster = false;
+			break;
+		case SDL_SCANCODE_Q:
+			m_asteroids.push_back(new Asteroid());
+			break;
+		case SDL_SCANCODE_E:
+			if(m_asteroids.size()>0) //if the vector has asteroids, then remove them.
+				m_asteroids.pop_back();
 			break;
 		default:
 			//DO NOTHING
@@ -128,8 +134,9 @@ namespace Engine
 		double startTime = m_timer->GetElapsedTimeInSeconds();
 
 		// Update code goes here
-		ship.Update(DESIRED_FRAME_TIME);
-		asteroid.Update(DESIRED_FRAME_TIME);
+		m_ship->Update(DESIRED_FRAME_TIME);
+		for(int i=0;i<m_asteroids.size();i++)
+			m_asteroids[i]->Update(DESIRED_FRAME_TIME);
 
 		double endTime = m_timer->GetElapsedTimeInSeconds();
 		double nextTimeFrame = startTime + DESIRED_FRAME_TIME;
@@ -153,8 +160,9 @@ namespace Engine
 		Colors c;
 		glClearColor(c.Dark_aqua().r, c.Dark_aqua().g, c.Dark_aqua().b, c.Dark_aqua().a);
 		glClear(GL_COLOR_BUFFER_BIT);
-		ship.Render();
-		asteroid.Render();
+		m_ship->Render();
+		for(int i=0;i<m_asteroids.size();i++)
+			m_asteroids[i]->Render();
 		SDL_GL_SwapWindow(m_mainWindow);
 	}
 

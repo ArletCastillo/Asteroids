@@ -11,6 +11,8 @@
 #include "TimeManager.hpp"
 
 #include "Player.hpp"
+#include "Asteroid.hpp"
+#include <vector>
 
 namespace Engine
 {
@@ -68,6 +70,8 @@ namespace Engine
 		SDL_GLContext						m_context;
 		GameState::State					m_state;
 		Engine::TimeManager*				m_timer;
+		Player*                             m_ship;
+		std::vector<Asteroid*>				m_asteroids;
 	};
 }
 #endif /* GAME_HPP */

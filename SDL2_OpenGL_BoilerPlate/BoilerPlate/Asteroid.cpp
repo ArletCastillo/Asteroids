@@ -2,13 +2,13 @@
 #include <SDL2/SDL_opengl.h>
 #include "MathUtilities.hpp"
 
-const float SPEED_X = 200.0f;
+const float SPEED_X = 100.0f;
 const float SPEED_Y = 0.0f;
 
 Asteroid::Asteroid() {
 	m_base = Vector2(0, 0);
 	m_angle = 0.0f;
-	Change_size(BIG);
+	Change_size(MEDIUM);
 	m_mass = 1.0f;
 	m_rotation = 100.0f;
 	//coordenates for the asteroid
