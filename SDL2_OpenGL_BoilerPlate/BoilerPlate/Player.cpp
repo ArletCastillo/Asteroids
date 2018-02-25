@@ -38,15 +38,6 @@ void Player::Thruster() {
 	glEnd();
 }
 
-void Player::Draw_circle(float x, float y, float radius){
-	int lineAmount = 100;
-	int twicePi = 2.0f * PI;
-	glBegin(GL_LINE_LOOP);
-	for (int i = 0; i <= lineAmount; i++)
-		glVertex2f((radius*cos(i*twicePi / lineAmount)), (radius*sin(i*twicePi / lineAmount)));
-	glEnd();
-}
-
 void Player::Move_forward(){
 	Apply_impulse(Vector2(SPEED_X, SPEED_Y));
 }
@@ -60,11 +51,11 @@ void Player::Render() {
 		glVertex2f(m_shipContainer[i].x, m_shipContainer[i].y);
 	glEnd();
 
-	if (activateThruster == true) {
+	if (activateThruster == true)
 		Thruster();
-	}
 
-	//Draw_circle(m_base.x, m_base.y, )
+	if(activateCircle == true)
+		Draw_circle(m_base.x, m_base.y, 30.0f);
 }
 
 void Player::Update(float time){

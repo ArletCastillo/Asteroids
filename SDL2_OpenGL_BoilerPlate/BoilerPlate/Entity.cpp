@@ -1,6 +1,7 @@
 #include "Entity.hpp"
 #include <cmath>
 #include "MathUtilities.hpp"
+#include <SDL2/SDL_opengl.h>
 
 const int SCREEN_WIDHT = 1136;
 const int SCREEN_HEIGHT = 640;
@@ -40,4 +41,15 @@ void Entity::Rotate_left() {
 
 void Entity::Rotate_right() {
 	m_angle -= 5;
+}
+
+void Entity::Draw_circle(float x, float y, float radius){
+	float lineAmount = 100.0f;
+	float twicePi = 2.0f * PI;
+	glLoadIdentity();
+	glTranslatef(x, y, 0.0f);
+	glBegin(GL_LINE_LOOP);
+	for (int i = 0; i <= lineAmount; i++)
+		glVertex2f((radius*cosf(i*twicePi / lineAmount)), (radius*sinf(i*twicePi / lineAmount)));
+	glEnd();
 }

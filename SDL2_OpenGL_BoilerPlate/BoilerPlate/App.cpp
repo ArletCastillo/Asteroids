@@ -90,15 +90,22 @@ namespace Engine
 			m_ship->activateThruster = true;
 			break;
 		case SDL_SCANCODE_A:
-			m_ship->activateThruster = false;
 			m_ship->Rotate_left();
 			break;
 		case SDL_SCANCODE_S:
-			m_ship->activateThruster = false;
 			break;
 		case SDL_SCANCODE_D:
-			m_ship->activateThruster = false;
+			m_ship->activateCircle = true;
+			for (int i = 0; i < m_asteroids.size(); i++)
+				m_asteroids[i]->activateCircle = true;
 			m_ship->Rotate_right();
+			break;
+		case SDL_SCANCODE_Q:
+			m_asteroids.push_back(new Asteroid());
+			break;
+		case SDL_SCANCODE_E:
+			if (m_asteroids.size()>0) //if the vector has asteroids, then remove them.
+				m_asteroids.pop_back();
 			break;
 		default:			
 			SDL_Log("%S was pressed...", keyBoardEvent.keysym.scancode);
@@ -116,12 +123,10 @@ namespace Engine
 		case SDL_SCANCODE_W:
 			m_ship->activateThruster = false;
 			break;
-		case SDL_SCANCODE_Q:
-			m_asteroids.push_back(new Asteroid());
-			break;
-		case SDL_SCANCODE_E:
-			if(m_asteroids.size()>0) //if the vector has asteroids, then remove them.
-				m_asteroids.pop_back();
+		case SDL_SCANCODE_D:
+			m_ship->activateCircle = false;
+			for (int i = 0; i < m_asteroids.size(); i++)
+				m_asteroids[i]->activateCircle = false;
 			break;
 		default:
 			//DO NOTHING

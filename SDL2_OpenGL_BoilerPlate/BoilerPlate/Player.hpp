@@ -25,7 +25,6 @@ class  Player: public Entity{
 		void Render() override;
 		void Update(float) override;
 		void Thruster();
-		void Draw_circle(float x, float y, float radius);
 };
 #endif // !_PLAYER_H_
 

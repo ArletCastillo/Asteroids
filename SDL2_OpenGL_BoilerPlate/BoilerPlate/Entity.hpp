@@ -12,8 +12,12 @@ class Entity{
 		Vector2 m_velocity;
 		float m_angle, m_mass, m_radius;
 		float m_maxHeight, m_maxWidth, m_halfHeight, m_halfWidth;
+		//protected function
+		void Draw_circle(float x, float y, float radius);
 
 	public:
+		//public member
+		bool activateCircle;
 		//functions
 		virtual void Render();
 		virtual void Update(float);
