@@ -176,12 +176,17 @@ namespace Engine
 			}
 		}
 		for (int i = 0; i < m_asteroids.size(); i++) {
+			bool x = false;
 			for (int j = 0; j < m_bullets.size(); j++) {
 				if ((m_colision.Distance(m_asteroids[i]->getOrigin(), m_bullets[j]->getOrigin())) <= (m_asteroids[i]->getRadius() + m_bullets[j]->getRadius())) {
 					m_bullets.erase(m_bullets.begin() + j);
+					x = true;
 					m_isShot = false;
+					break;
 				}
 			}
+			if (x == true)
+				break;
 		}
 		double endTime = m_timer->GetElapsedTimeInSeconds();
 		double nextTimeFrame = startTime + DESIRED_FRAME_TIME;
