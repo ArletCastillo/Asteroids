@@ -17,7 +17,7 @@ Player::Player() {
 	m_base = Vector2(0.0f, 0.0f);
 	m_angle = 0.0f;
 	m_mass = 2.0f;
-	m_radius = 20.0f;
+	m_radius = 15.0f;
 	//ship's coordenates
 	m_shipContainer.push_back(Vector2(0.0f, 20.0f));
 	m_shipContainer.push_back(Vector2(12.0f, -10.0f));

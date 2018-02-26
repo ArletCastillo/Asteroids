@@ -103,10 +103,6 @@ namespace Engine
 		case SDL_SCANCODE_S:
 			break;
 		case SDL_SCANCODE_D:
-			m_activateLine = true;
-			m_ship->activateCircle = true;
-			for (int i = 0; i < m_asteroids.size(); i++)
-				m_asteroids[i]->activateCircle = true;
 			m_ship->RotateRight();
 			break;
 		case SDL_SCANCODE_Q:
@@ -115,6 +111,14 @@ namespace Engine
 		case SDL_SCANCODE_E:
 			if (m_asteroids.size()>0) //if the vector has asteroids, then remove them.
 				m_asteroids.pop_back();
+			break;
+		case SDL_SCANCODE_G:
+			m_activateLine = true;
+			m_ship->activateCircle = true;
+			for (int i = 0; i < m_asteroids.size(); i++)
+				m_asteroids[i]->activateCircle = true;
+			for (int i = 0; i < m_bullets.size(); i++)
+				m_bullets[i]->activateCircle = true;
 			break;
 		case SDL_SCANCODE_F:
 			m_activateLine = false;
