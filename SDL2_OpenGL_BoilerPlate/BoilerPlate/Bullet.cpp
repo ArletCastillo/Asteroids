@@ -8,7 +8,7 @@ Bullet::Bullet(Player* ship){
 	Vector2 shipPosition = ship->getOrigin();
 	m_angle = ship->getAngle();
 	float radians = math.degToRad(m_angle);
-	m_radius = 10.0f;
+	m_radius = 3.0f;
 	m_mass = 1.0f;
 	m_base.x = shipPosition.x + ship->getRadius() * -sinf(radians);
 	m_base.y = shipPosition.y + ship->getRadius() * cosf(radians);

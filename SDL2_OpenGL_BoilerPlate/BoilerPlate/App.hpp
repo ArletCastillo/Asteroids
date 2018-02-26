@@ -72,6 +72,7 @@ namespace Engine
 		double								m_lastFrameTime;
 		bool								m_activateLine;
 		bool								m_activateColision;
+		bool								m_isShot;
 		std::string							m_title;
 		SDL_Window*							m_mainWindow;
 		SDL_GLContext						m_context;

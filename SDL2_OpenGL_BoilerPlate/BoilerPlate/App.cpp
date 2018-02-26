@@ -24,6 +24,7 @@ namespace Engine
 	App::App(const std::string& title, const int width, const int height)
 		: m_title(title)
 		, m_activateColision(true)
+		, m_isShot(true)
 		, m_width(width)
 		, m_height(height)
 		, m_nUpdates(0)
@@ -174,6 +175,14 @@ namespace Engine
 				m_activateColision = false;
 			}
 		}
+		for (int i = 0; i < m_asteroids.size(); i++) {
+			for (int j = 0; j < m_bullets.size(); j++) {
+				if ((m_colision.Distance(m_asteroids[i]->getOrigin(), m_bullets[j]->getOrigin())) <= (m_asteroids[i]->getRadius() + m_bullets[j]->getRadius())) {
+					m_bullets.erase(m_bullets.begin() + j);
+					m_isShot = false;
+				}
+			}
+		}
 		double endTime = m_timer->GetElapsedTimeInSeconds();
 		double nextTimeFrame = startTime + DESIRED_FRAME_TIME;
 
@@ -193,13 +202,14 @@ namespace Engine
 	void App::RenderEntity() {
 		if (m_activateColision == true)
 			m_ship->Render();
-		for (int i = 0; i<m_asteroids.size(); i++)
-			m_asteroids[i]->Render();
+		for (int i = 0; i < m_asteroids.size(); i++) {
+			if(m_isShot == true)
+				m_asteroids[i]->Render();
+		}
 		for (int i = 0; i < m_bullets.size(); i++) {
 			if(m_bullets[i]->m_isAlive == true)
 				m_bullets[i]->Render();
-		}
-			
+		}	
 	}
 
 	void App::Render()
