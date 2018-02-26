@@ -21,7 +21,7 @@ class  Asteroid: public Entity{
 
 	public:
 		//constructor
-		Asteroid();
+		Asteroid(float, float);
 		//functions
 		void Render() override;
 		void Update(float) override;

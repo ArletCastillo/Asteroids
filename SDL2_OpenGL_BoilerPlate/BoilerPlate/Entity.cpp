@@ -47,6 +47,10 @@ Vector2 Entity::getOrigin(){
 	return m_base;
 }
 
+float Entity::getRadius(){
+	return m_radius;
+}
+
 void Entity::DrawCircle(float x, float y, float radius){
 	float lineAmount = 100.0f;
 	float twicePi = 2.0f * PI;

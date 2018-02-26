@@ -12,6 +12,7 @@
 
 #include "Player.hpp"
 #include "Asteroid.hpp"
+#include "Vector2.hpp"
 #include <vector>
 
 namespace Engine
@@ -68,7 +69,8 @@ namespace Engine
 		int									m_height;
 		int									m_nUpdates;
 		double								m_lastFrameTime;
-		bool								activateLine;
+		bool								m_activateLine;
+		bool								m_activateColision;
 		std::string							m_title;
 		SDL_Window*							m_mainWindow;
 		SDL_GLContext						m_context;
@@ -76,6 +78,7 @@ namespace Engine
 		Engine::TimeManager*				m_timer;
 		Player*                             m_ship;
 		std::vector<Asteroid*>				m_asteroids;
+		Vector2								m_colision;
 	};
 }
 #endif /* GAME_HPP */

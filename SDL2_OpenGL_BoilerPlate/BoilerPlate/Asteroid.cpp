@@ -6,12 +6,13 @@
 const float SPEED_X = 100.0f;
 const float SPEED_Y = 0.0f;
 
-Asteroid::Asteroid() {
-	m_base = Vector2(0, 0);
+Asteroid::Asteroid(float x, float y) {
+	m_base = Vector2(x, y);
 	m_angle = 0.0f;
 	ChangeSize(BIG);
 	m_mass = 1.0f;
 	m_rotation = 100.0f;
+	m_radius = 80.0f;
 	//coordenates for the asteroid
 	m_asteroidContainer.push_back(m_size*Vector2(0.0, 10.0));
 	m_asteroidContainer.push_back(m_size*Vector2(9.0, 12.0));
@@ -57,7 +58,7 @@ void Asteroid::Render() {
 	glEnd();
 
 	if(activateCircle == true)
-		DrawCircle(m_base.x, m_base.y, 80.0f);
+		DrawCircle(m_base.x, m_base.y, m_radius);
 }
 
 void Asteroid::Update(float time){

@@ -17,6 +17,7 @@ struct Vector2 {
 	float Lenght() const;
 	float SquaredLenght() const;
 	float Normalize();
+	float Distance(Vector2, Vector2);
 
 	//operators
 	Vector2& operator=(const Vector2& rightHandSide);

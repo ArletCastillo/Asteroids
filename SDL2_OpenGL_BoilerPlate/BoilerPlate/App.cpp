@@ -13,10 +13,12 @@ namespace Engine
 {
 	const float DESIRED_FRAME_RATE = 60.0f;
 	const float DESIRED_FRAME_TIME = 1.0f / DESIRED_FRAME_RATE;
+	const float X_VALUE = -200.0f;
+	const float Y_VALUE = -100.0f;
 
 	void App::CreateEntity() {
 		m_ship = new Player();
-		m_asteroids.push_back(new Asteroid());
+		m_asteroids.push_back(new Asteroid(X_VALUE, Y_VALUE));
 	}
 
 	void App::UpdateEntity() {
@@ -25,14 +27,9 @@ namespace Engine
 			m_asteroids[i]->Update(DESIRED_FRAME_TIME);
 	}
 
-	void App::RenderEntity() {
-		m_ship->Render();
-		for (int i = 0; i<m_asteroids.size(); i++)
-			m_asteroids[i]->Render();
-	}
-
 	App::App(const std::string& title, const int width, const int height)
 		: m_title(title)
+		, m_activateColision(true)
 		, m_width(width)
 		, m_height(height)
 		, m_nUpdates(0)
@@ -41,7 +38,6 @@ namespace Engine
 	{
 		m_state = GameState::UNINITIALIZED;
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
-
 		CreateEntity();
 		
 	}
@@ -113,24 +109,27 @@ namespace Engine
 		case SDL_SCANCODE_S:
 			break;
 		case SDL_SCANCODE_D:
-			activateLine = true;
+			m_activateLine = true;
 			m_ship->activateCircle = true;
 			for (int i = 0; i < m_asteroids.size(); i++)
 				m_asteroids[i]->activateCircle = true;
 			m_ship->RotateRight();
 			break;
 		case SDL_SCANCODE_Q:
-			m_asteroids.push_back(new Asteroid());
+			m_asteroids.push_back(new Asteroid(X_VALUE, Y_VALUE));
 			break;
 		case SDL_SCANCODE_E:
 			if (m_asteroids.size()>0) //if the vector has asteroids, then remove them.
 				m_asteroids.pop_back();
 			break;
 		case SDL_SCANCODE_F:
-			activateLine = false;
+			m_activateLine = false;
 			m_ship->activateCircle = false;
 			for (int i = 0; i < m_asteroids.size(); i++)
 				m_asteroids[i]->activateCircle = false;
+			break;
+		case SDL_SCANCODE_Z:
+			m_activateColision = true;
 			break;
 		default:			
 			SDL_Log("%S was pressed...", keyBoardEvent.keysym.scancode);
@@ -160,7 +159,12 @@ namespace Engine
 
 		// Update code goes here
 		UpdateEntity();
-
+		for (int i = 0; i < m_asteroids.size(); i++) {
+			if ((m_colision.Distance(m_ship->getOrigin(), m_asteroids[i]->getOrigin())) <= (m_ship->getRadius() + m_asteroids[i]->getRadius())) {
+				m_asteroids.erase(m_asteroids.begin() + i);
+				m_activateColision = false;
+			}
+		}
 		double endTime = m_timer->GetElapsedTimeInSeconds();
 		double nextTimeFrame = startTime + DESIRED_FRAME_TIME;
 
@@ -177,6 +181,13 @@ namespace Engine
 		m_nUpdates++;
 	}
 
+	void App::RenderEntity() {
+		if (m_activateColision == true)
+			m_ship->Render();
+		for (int i = 0; i<m_asteroids.size(); i++)
+			m_asteroids[i]->Render();
+	}
+
 	void App::Render()
 	{
 		//glClearColor(0.1f, 0.1f, 0.15f, 1.0f)
@@ -184,7 +195,7 @@ namespace Engine
 		glClearColor(c.Dark_aqua().r, c.Dark_aqua().g, c.Dark_aqua().b, c.Dark_aqua().a);
 		glClear(GL_COLOR_BUFFER_BIT);
 		RenderEntity();
-		if(activateLine == true)
+		if(m_activateLine == true)
 			for (int i = 0; i < m_asteroids.size(); i++)
 				m_asteroids[i]->DrawLine(m_ship->getOrigin());
 		SDL_GL_SwapWindow(m_mainWindow);

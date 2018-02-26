@@ -26,6 +26,7 @@ class Entity{
 		void RotateLeft();
 		void RotateRight();
 		Vector2 getOrigin();
+		float getRadius();
 };
 
 #endif // !_ENTITY_H_

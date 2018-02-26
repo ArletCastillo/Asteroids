@@ -19,6 +19,7 @@ Player::Player() {
 	m_base = Vector2(0, 0);
 	m_angle = 0.0f;
 	m_mass = 2.0f;
+	m_radius = 30.0f;
 	//ship's coordenates
 	m_shipContainer.push_back(Vector2(0.0, 20.0));
 	m_shipContainer.push_back(Vector2(12.0, -10.0));
@@ -55,7 +56,7 @@ void Player::Render() {
 		Thruster();
 
 	if(activateCircle == true)
-		DrawCircle(m_base.x, m_base.y, 30.0f);
+		DrawCircle(m_base.x, m_base.y, m_radius);
 }
 
 void Player::Update(float time){
