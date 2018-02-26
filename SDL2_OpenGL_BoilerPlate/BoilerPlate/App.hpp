@@ -49,6 +49,7 @@ namespace Engine
 		void CreateEntity					( );
 		void UpdateEntity					( );
 		void RenderEntity					( );
+		void CreateAsteroidWithPosition		(Vector2, int);
 	private:
 		/* =============================================================
 		 * PRIVATE FUNCTIONS
@@ -80,7 +81,7 @@ namespace Engine
 		Engine::TimeManager*				m_timer;
 		Player*                             m_ship;
 		std::vector<Asteroid*>				m_asteroids;
-		Vector2								m_colision;
+		Vector2								m_collision;
 		std::vector<Bullet*>				m_bullets;
 	};
 }

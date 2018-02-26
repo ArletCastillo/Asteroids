@@ -13,12 +13,10 @@ namespace Engine
 {
 	const float DESIRED_FRAME_RATE = 60.0f;
 	const float DESIRED_FRAME_TIME = 1.0f / DESIRED_FRAME_RATE;
-	const float X_VALUE = -200.0f;
-	const float Y_VALUE = -100.0f;
 
 	void App::CreateEntity() {
 		m_ship = new Player();
-		m_asteroids.push_back(new Asteroid(X_VALUE, Y_VALUE));
+		m_asteroids.push_back(new Asteroid());
 	}
 
 	App::App(const std::string& title, const int width, const int height)
@@ -107,7 +105,7 @@ namespace Engine
 			m_ship->RotateRight();
 			break;
 		case SDL_SCANCODE_Q:
-			m_asteroids.push_back(new Asteroid(X_VALUE, Y_VALUE));
+			m_asteroids.push_back(new Asteroid());
 			break;
 		case SDL_SCANCODE_E:
 			if (m_asteroids.size()>0) //if the vector has asteroids, then remove them.
@@ -163,6 +161,11 @@ namespace Engine
 			m_bullets[i]->Update(DESIRED_FRAME_TIME);
 	}
 
+	void App::CreateAsteroidWithPosition(Vector2 position, int size){
+		m_asteroids.push_back(new Asteroid(size));
+		m_asteroids[m_asteroids.size() - 1]->AssignPosition(position);
+	}
+
 	void App::Update()
 	{
 		double startTime = m_timer->GetElapsedTimeInSeconds();
@@ -170,23 +173,27 @@ namespace Engine
 		// Update code goes here
 		UpdateEntity();
 		for (int i = 0; i < m_asteroids.size(); i++) {
-			if ((m_colision.Distance(m_ship->getOrigin(), m_asteroids[i]->getOrigin())) <= (m_ship->getRadius() + m_asteroids[i]->getRadius())) {
+			/* if the distance between the ship and the asteroid is smaller than the sum of their radius 
+			(meaning that they are really close) erase the asteroid */
+			if ((m_collision.Distance(m_ship->getOrigin(), m_asteroids[i]->getOrigin())) 
+				 <= (m_ship->getRadius() + m_asteroids[i]->getRadius())) {
 				m_asteroids.erase(m_asteroids.begin() + i);
 				m_activateColision = false;
 			}
 		}
 		for (int i = 0; i < m_asteroids.size(); i++) {
-			bool x = false;
 			for (int j = 0; j < m_bullets.size(); j++) {
-				if ((m_colision.Distance(m_asteroids[i]->getOrigin(), m_bullets[j]->getOrigin())) <= (m_asteroids[i]->getRadius() + m_bullets[j]->getRadius())) {
+				/* if the distance between the asteroid and the bullet is smaller than the sum of their radius 
+				(meaning that they are really close) */
+				if ((m_collision.Distance(m_asteroids[i]->getOrigin(), m_bullets[j]->getOrigin())) 
+					<= (m_asteroids[i]->getRadius() + m_bullets[j]->getRadius())) {
+					//erase the asteroid
+					m_asteroids.erase(m_asteroids.begin() + i);
+					//erase the bullet
 					m_bullets.erase(m_bullets.begin() + j);
-					x = true;
-					m_isShot = false;
-					break;
+					//if(m_asteroids[i]->GetSize()!=1)
 				}
 			}
-			if (x == true)
-				break;
 		}
 		double endTime = m_timer->GetElapsedTimeInSeconds();
 		double nextTimeFrame = startTime + DESIRED_FRAME_TIME;
@@ -208,12 +215,13 @@ namespace Engine
 		if (m_activateColision == true)
 			m_ship->Render();
 		for (int i = 0; i < m_asteroids.size(); i++) {
-			if(m_isShot == true)
-				m_asteroids[i]->Render();
+			m_asteroids[i]->Render();
 		}
 		for (int i = 0; i < m_bullets.size(); i++) {
 			if(m_bullets[i]->m_isAlive == true)
 				m_bullets[i]->Render();
+			else
+				m_bullets.erase(m_bullets.begin() + i);
 		}	
 	}
 

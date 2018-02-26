@@ -13,7 +13,7 @@ Bullet::Bullet(Player* ship){
 	m_base.x = shipPosition.x + ship->getRadius() * -sinf(radians);
 	m_base.y = shipPosition.y + ship->getRadius() * cosf(radians);
 	m_velocity = 0.0f;
-	m_lifespan = 100.0f;
+	m_lifespan = 80.0f;
 	m_isAlive = true;
 	//coordenates for the bullet
 	m_bulletContainer.push_back(0.10f*Vector2(0.0f, 10.0f));

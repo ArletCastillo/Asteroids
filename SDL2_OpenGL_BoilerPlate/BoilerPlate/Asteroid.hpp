@@ -21,12 +21,14 @@ class  Asteroid: public Entity{
 
 	public:
 		//constructor
-		Asteroid(float, float);
+		Asteroid();
+		Asteroid(int);
 		//functions
 		void Render() override;
 		void Update(float) override;
 		int GetSize();
 		void DrawLine(Vector2);
+		void AssignPosition(Vector2);
 };
 
 #endif // !_ASTEROID_H_
