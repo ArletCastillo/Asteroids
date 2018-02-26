@@ -44,6 +44,9 @@ namespace Engine
 		bool Init							( );
 		void Update							( );
 		void Render							( );
+		void CreateEntity					( );
+		void UpdateEntity					( );
+		void RenderEntity					( );
 	private:
 		/* =============================================================
 		 * PRIVATE FUNCTIONS
@@ -65,6 +68,7 @@ namespace Engine
 		int									m_height;
 		int									m_nUpdates;
 		double								m_lastFrameTime;
+		bool								activateLine;
 		std::string							m_title;
 		SDL_Window*							m_mainWindow;
 		SDL_GLContext						m_context;

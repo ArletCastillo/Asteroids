@@ -13,7 +13,7 @@ class  Player: public Entity{
 		std::vector<Vector2> m_thrusterContainer;
 		float m_cSpeed;
 		//private function
-		void Apply_impulse(Vector2);
+		void ApplyImpulse(Vector2);
 
 	public:
 		//public member
@@ -21,7 +21,7 @@ class  Player: public Entity{
 		//constructor
 		Player();
 		//functions
-		void Move_forward();
+		void MoveForward();
 		void Render() override;
 		void Update(float) override;
 		void Thruster();

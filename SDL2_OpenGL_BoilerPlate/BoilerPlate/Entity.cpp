@@ -27,7 +27,7 @@ void Entity::Wrap(float& vertex, float min, float max) {
 		vertex = min + (vertex - max);
 }
 
-void Entity::Move_forward(){
+void Entity::MoveForward(){
 	m_halfWidth = SCREEN_WIDHT / 2.0f;
 	m_halfHeight = SCREEN_HEIGHT / 2.0f;
 
@@ -35,15 +35,19 @@ void Entity::Move_forward(){
 	m_base += Vector2(8 * sin(realAngle.degToRad(m_angle)*-1), 8 * cos(realAngle.degToRad(m_angle)));
 }
 
-void Entity::Rotate_left() {
+void Entity::RotateLeft() {
 	m_angle += 5;
 }
 
-void Entity::Rotate_right() {
+void Entity::RotateRight() {
 	m_angle -= 5;
 }
 
-void Entity::Draw_circle(float x, float y, float radius){
+Vector2 Entity::getOrigin(){
+	return m_base;
+}
+
+void Entity::DrawCircle(float x, float y, float radius){
 	float lineAmount = 100.0f;
 	float twicePi = 2.0f * PI;
 	glLoadIdentity();

@@ -8,7 +8,7 @@ const float ANGLE = 90.0f;
 const float SPEED_X = 10.0f;
 const float SPEED_Y = 10.0f;
 
-void Player::Apply_impulse(Vector2 impulse){
+void Player::ApplyImpulse(Vector2 impulse){
 	if (m_mass > 0) {
 		m_velocity.x += (impulse.x / m_mass) * cosf((m_angle + ANGLE) * (PI / 180));
 		m_velocity.y += (impulse.y / m_mass) * sinf((m_angle + ANGLE) * (PI / 180));
@@ -38,8 +38,8 @@ void Player::Thruster() {
 	glEnd();
 }
 
-void Player::Move_forward(){
-	Apply_impulse(Vector2(SPEED_X, SPEED_Y));
+void Player::MoveForward(){
+	ApplyImpulse(Vector2(SPEED_X, SPEED_Y));
 }
 
 void Player::Render() {
@@ -55,7 +55,7 @@ void Player::Render() {
 		Thruster();
 
 	if(activateCircle == true)
-		Draw_circle(m_base.x, m_base.y, 30.0f);
+		DrawCircle(m_base.x, m_base.y, 30.0f);
 }
 
 void Player::Update(float time){

@@ -1,4 +1,5 @@
 #include "Asteroid.hpp"
+#include "Player.hpp"
 #include <SDL2/SDL_opengl.h>
 #include "MathUtilities.hpp"
 
@@ -8,7 +9,7 @@ const float SPEED_Y = 0.0f;
 Asteroid::Asteroid() {
 	m_base = Vector2(0, 0);
 	m_angle = 0.0f;
-	Change_size(BIG);
+	ChangeSize(BIG);
 	m_mass = 1.0f;
 	m_rotation = 100.0f;
 	//coordenates for the asteroid
@@ -24,18 +25,26 @@ Asteroid::Asteroid() {
 	m_asteroidContainer.push_back(m_size*Vector2(-14.0, 6.0));
 	m_asteroidContainer.push_back(m_size*Vector2(-9.0, 13.0));
 
-	Apply_impulse(Vector2(SPEED_X, SPEED_Y));
+	ApplyImpulse(Vector2(SPEED_X, SPEED_Y));
 }
 
-int Asteroid::Get_size(){
+int Asteroid::GetSize(){
 	return m_size;
 }
 
-void Asteroid::Apply_impulse(Vector2 impulse){
+void Asteroid::ApplyImpulse(Vector2 impulse){
 	if (m_mass > 0) {
 		m_velocity.x += (impulse.x / m_mass) * sinf(m_rotation * (PI / 180)) + m_size;
 		m_velocity.y += (impulse.x / m_mass) * cosf(m_rotation * (PI / 180)) + m_size;
 	}
+}
+
+void Asteroid::DrawLine(Vector2 player){
+	glLoadIdentity();
+	glBegin(GL_LINE_LOOP);
+	glVertex2f(player.x, player.y);
+	glVertex2f(m_base.x, m_base.y);
+	glEnd();
 }
 
 void Asteroid::Render() {
@@ -48,7 +57,7 @@ void Asteroid::Render() {
 	glEnd();
 
 	if(activateCircle == true)
-		Draw_circle(m_base.x, m_base.y, 90.0f);
+		DrawCircle(m_base.x, m_base.y, 80.0f);
 }
 
 void Asteroid::Update(float time){
@@ -56,7 +65,7 @@ void Asteroid::Update(float time){
 	Entity::Update(time);
 }
 
-void Asteroid::Change_size(int _size) {
+void Asteroid::ChangeSize(int _size) {
 	m_size = _size;
 
 }

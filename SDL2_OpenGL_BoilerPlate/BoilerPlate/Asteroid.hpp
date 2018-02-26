@@ -16,8 +16,8 @@ class  Asteroid: public Entity{
 		int m_size;
 		float m_rotation;
 		//private function
-		void Change_size(int);
-		void Apply_impulse(Vector2);
+		void ChangeSize(int);
+		void ApplyImpulse(Vector2);
 
 	public:
 		//constructor
@@ -25,7 +25,8 @@ class  Asteroid: public Entity{
 		//functions
 		void Render() override;
 		void Update(float) override;
-		int Get_size();
+		int GetSize();
+		void DrawLine(Vector2);
 };
 
 #endif // !_ASTEROID_H_
