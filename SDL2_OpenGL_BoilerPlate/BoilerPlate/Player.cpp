@@ -5,8 +5,6 @@
 
 const float MAXIMUM_SPEED = 350.0f;
 const float ANGLE = 90.0f;
-const float SPEED_X = 10.0f;
-const float SPEED_Y = 10.0f;
 
 void Player::ApplyImpulse(Vector2 impulse){
 	if (m_mass > 0) {
@@ -16,20 +14,20 @@ void Player::ApplyImpulse(Vector2 impulse){
 }
 
 Player::Player() {
-	m_base = Vector2(0, 0);
+	m_base = Vector2(0.0f, 0.0f);
 	m_angle = 0.0f;
 	m_mass = 2.0f;
-	m_radius = 30.0f;
+	m_radius = 20.0f;
 	//ship's coordenates
-	m_shipContainer.push_back(Vector2(0.0, 20.0));
-	m_shipContainer.push_back(Vector2(12.0, -10.0));
-	m_shipContainer.push_back(Vector2(6.0, -4.0));
-	m_shipContainer.push_back(Vector2(-6.0, -4.0));
-	m_shipContainer.push_back(Vector2(-12.0, -10.0));
+	m_shipContainer.push_back(Vector2(0.0f, 20.0f));
+	m_shipContainer.push_back(Vector2(12.0f, -10.0f));
+	m_shipContainer.push_back(Vector2(6.0f, -4.0f));
+	m_shipContainer.push_back(Vector2(-6.0f, -4.0f));
+	m_shipContainer.push_back(Vector2(-12.0f, -10.0f));
 	//thruster's coordenates
-	m_thrusterContainer.push_back(Vector2(-6.0, -7.0));
-	m_thrusterContainer.push_back(Vector2(6.0, -7.0));
-	m_thrusterContainer.push_back(Vector2(0.0, -15.0));
+	m_thrusterContainer.push_back(Vector2(-6.0f, -7.0f));
+	m_thrusterContainer.push_back(Vector2(6.0f, -7.0f));
+	m_thrusterContainer.push_back(Vector2(0.0f, -15.0f));
 }
 
 void Player::Thruster() {
@@ -40,7 +38,7 @@ void Player::Thruster() {
 }
 
 void Player::MoveForward(){
-	ApplyImpulse(Vector2(SPEED_X, SPEED_Y));
+	ApplyImpulse(Vector2(10.0f));
 }
 
 void Player::Render() {
@@ -62,9 +60,8 @@ void Player::Render() {
 void Player::Update(float time){
 	//clamping speed as a scalar, since velocity is a vector
 	float speed = fabs(sqrtf(pow(m_velocity.x, 2) + pow(m_velocity.y, 2)));
-
-	m_velocity *= 0.99;
-
+	//adds friction to the ship
+	m_velocity *= 0.99f;
 	//prevents ship form disappearing because of how fast is moving
 	if (speed > MAXIMUM_SPEED) {
 		m_velocity.x = (m_velocity.x / speed) * MAXIMUM_SPEED;

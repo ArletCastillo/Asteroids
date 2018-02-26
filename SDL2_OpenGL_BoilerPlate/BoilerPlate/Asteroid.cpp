@@ -3,30 +3,27 @@
 #include <SDL2/SDL_opengl.h>
 #include "MathUtilities.hpp"
 
-const float SPEED_X = 100.0f;
-const float SPEED_Y = 0.0f;
-
 Asteroid::Asteroid(float x, float y) {
 	m_base = Vector2(x, y);
 	m_angle = 0.0f;
 	ChangeSize(BIG);
 	m_mass = 1.0f;
 	m_rotation = 100.0f;
-	m_radius = 80.0f;
+	m_radius = 70.0f;
 	//coordenates for the asteroid
-	m_asteroidContainer.push_back(m_size*Vector2(0.0, 10.0));
-	m_asteroidContainer.push_back(m_size*Vector2(9.0, 12.0));
-	m_asteroidContainer.push_back(m_size*Vector2(17.0, 8.0));
-	m_asteroidContainer.push_back(m_size*Vector2(14.0, 5.0));
-	m_asteroidContainer.push_back(m_size*Vector2(17.0, 0.0));
-	m_asteroidContainer.push_back(m_size*Vector2(11.0, -6.0));
-	m_asteroidContainer.push_back(m_size*Vector2(0.0, -8.0));
-	m_asteroidContainer.push_back(m_size*Vector2(-11.0, -6.0));
-	m_asteroidContainer.push_back(m_size*Vector2(-9.0, 0.0));
-	m_asteroidContainer.push_back(m_size*Vector2(-14.0, 6.0));
-	m_asteroidContainer.push_back(m_size*Vector2(-9.0, 13.0));
+	m_asteroidContainer.push_back(m_size*Vector2(0.0f, 10.0f));
+	m_asteroidContainer.push_back(m_size*Vector2(9.0f, 12.0f));
+	m_asteroidContainer.push_back(m_size*Vector2(17.0f, 8.0f));
+	m_asteroidContainer.push_back(m_size*Vector2(14.0f, 5.0f));
+	m_asteroidContainer.push_back(m_size*Vector2(17.0f, 0.0f));
+	m_asteroidContainer.push_back(m_size*Vector2(11.0f, -6.0f));
+	m_asteroidContainer.push_back(m_size*Vector2(0.0f, -8.0f));
+	m_asteroidContainer.push_back(m_size*Vector2(-11.0f, -6.0f));
+	m_asteroidContainer.push_back(m_size*Vector2(-9.0f, 0.0f));
+	m_asteroidContainer.push_back(m_size*Vector2(-14.0f, 6.0f));
+	m_asteroidContainer.push_back(m_size*Vector2(-9.0f, 13.0f));
 
-	ApplyImpulse(Vector2(SPEED_X, SPEED_Y));
+	ApplyImpulse(Vector2(100.0f));
 }
 
 int Asteroid::GetSize(){

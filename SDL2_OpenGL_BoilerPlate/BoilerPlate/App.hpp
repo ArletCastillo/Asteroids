@@ -14,6 +14,7 @@
 #include "Asteroid.hpp"
 #include "Vector2.hpp"
 #include <vector>
+#include "Bullet.hpp"
 
 namespace Engine
 {
@@ -79,6 +80,7 @@ namespace Engine
 		Player*                             m_ship;
 		std::vector<Asteroid*>				m_asteroids;
 		Vector2								m_colision;
+		Bullet*								m_bullet;
 	};
 }
 #endif /* GAME_HPP */

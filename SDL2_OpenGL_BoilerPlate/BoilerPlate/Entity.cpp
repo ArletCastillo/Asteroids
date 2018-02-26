@@ -36,11 +36,11 @@ void Entity::MoveForward(){
 }
 
 void Entity::RotateLeft() {
-	m_angle += 5;
+	m_angle += 5.0f;
 }
 
 void Entity::RotateRight() {
-	m_angle -= 5;
+	m_angle -= 5.0f;
 }
 
 Vector2 Entity::getOrigin(){
@@ -49,6 +49,10 @@ Vector2 Entity::getOrigin(){
 
 float Entity::getRadius(){
 	return m_radius;
+}
+
+float Entity::getAngle(){
+	return m_angle;
 }
 
 void Entity::DrawCircle(float x, float y, float radius){
