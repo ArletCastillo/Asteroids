@@ -9,16 +9,21 @@
 class  Player: public Entity{
 	private:
 		//members
-		std::vector<Vector2> shipContainer;
-		std::vector<Vector2> thrusterContainer;
+		std::vector<Vector2> m_shipContainer;
+		std::vector<Vector2> m_thrusterContainer;
+		float m_cSpeed;
+		//private function
+		void ApplyImpulse(Vector2);
 
 	public:
 		//public member
 		bool activateThruster;
-		//constructors
+		//constructor
 		Player();
 		//functions
-		void Render();
+		void MoveForward();
+		void Render() override;
+		void Update(float) override;
 		void Thruster();
 };
 #endif // !_PLAYER_H_

@@ -39,6 +39,10 @@ float Vector2::Normalize() {
 	return lenght;
 }
 
+float Vector2::Distance(Vector2 player, Vector2 asteroid){
+	return sqrt(pow(asteroid.x - player.x, 2) + pow(asteroid.y - player.y, 2));
+}
+
 Vector2& Vector2::operator=(const Vector2& rightHandSide) {
 	//prevents self assignment
 	if (this == &rightHandSide)

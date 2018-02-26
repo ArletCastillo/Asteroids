@@ -12,18 +12,23 @@ const int BIG = 4;
 class  Asteroid: public Entity{
 	private:
 		//members
-		std::vector<Vector2> asteroidContainer;
-		int size;
+		std::vector<Vector2> m_asteroidContainer;
+		int m_size;
+		float m_rotation;
 		//private function
-		void Change_size(int);
+		void ChangeSize(int);
+		void ApplyImpulse(Vector2);
 
 	public:
-		//constructors
+		//constructor
 		Asteroid();
+		Asteroid(int);
 		//functions
-		void Render();
-		void Update();
-		int Get_size(); 
+		void Render() override;
+		void Update(float) override;
+		int GetSize();
+		void DrawLine(Vector2);
+		void AssignPosition(Vector2);
 };
 
 #endif // !_ASTEROID_H_
