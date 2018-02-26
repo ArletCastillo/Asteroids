@@ -187,11 +187,17 @@ namespace Engine
 				(meaning that they are really close) */
 				if ((m_collision.Distance(m_asteroids[i]->getOrigin(), m_bullets[j]->getOrigin())) 
 					<= (m_asteroids[i]->getRadius() + m_bullets[j]->getRadius())) {
-					//erase the asteroid
-					m_asteroids.erase(m_asteroids.begin() + i);
-					//erase the bullet
 					m_bullets.erase(m_bullets.begin() + j);
-					//if(m_asteroids[i]->GetSize()!=1)
+					//checks if the asteroid is not small
+					if (m_asteroids[i]->GetSize() != 1) {
+						m_asteroids[i]->ChangeSize();
+						int newSize = m_asteroids[i]->GetSize();
+						CreateAsteroidWithPosition(m_asteroids[i]->getOrigin(), m_asteroids[i]->GetSize());
+					}
+					else {
+						//if it's small, then erases the asteroid
+						m_asteroids.erase(m_asteroids.begin() + i);
+					}
 				}
 			}
 		}
