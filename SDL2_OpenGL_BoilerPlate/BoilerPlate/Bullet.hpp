@@ -12,7 +12,6 @@ class Bullet: public Entity{
 		//member
 		std::vector<Vector2> m_bulletContainer;
 		int m_lifespan;
-		bool m_isAlive;
 		//private function
 		void ApplyImpulse(Vector2);
 
@@ -20,7 +19,7 @@ class Bullet: public Entity{
 		//constructor
 		Bullet(Player*);
 		//public memeber
-		bool activateBullet;
+		bool m_isAlive;
 		//function
 		void Render() override;
 		void Update(float) override;

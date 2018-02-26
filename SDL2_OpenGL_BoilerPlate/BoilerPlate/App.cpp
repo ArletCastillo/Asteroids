@@ -19,7 +19,6 @@ namespace Engine
 	void App::CreateEntity() {
 		m_ship = new Player();
 		m_asteroids.push_back(new Asteroid(X_VALUE, Y_VALUE));
-		m_bullet = new Bullet(m_ship);
 	}
 
 	App::App(const std::string& title, const int width, const int height)
@@ -127,7 +126,7 @@ namespace Engine
 			m_activateColision = true;
 			break;
 		case SDL_SCANCODE_SPACE:
-			m_bullet->activateBullet = true;
+			m_bullets.push_back(new Bullet(m_ship));
 			break;
 		default:			
 			SDL_Log("%S was pressed...", keyBoardEvent.keysym.scancode);
@@ -155,7 +154,8 @@ namespace Engine
 		m_ship->Update(DESIRED_FRAME_TIME);
 		for (int i = 0; i<m_asteroids.size(); i++)
 			m_asteroids[i]->Update(DESIRED_FRAME_TIME);
-		//m_bullet->Update(DESIRED_FRAME_TIME);
+		for(int i=0;i<m_bullets.size();i++)
+			m_bullets[i]->Update(DESIRED_FRAME_TIME);
 	}
 
 	void App::Update()
@@ -191,8 +191,11 @@ namespace Engine
 			m_ship->Render();
 		for (int i = 0; i<m_asteroids.size(); i++)
 			m_asteroids[i]->Render();
-		if(m_bullet->activateBullet == true)
-			m_bullet->Render();
+		for (int i = 0; i < m_bullets.size(); i++) {
+			if(m_bullets[i]->m_isAlive == true)
+				m_bullets[i]->Render();
+		}
+			
 	}
 
 	void App::Render()

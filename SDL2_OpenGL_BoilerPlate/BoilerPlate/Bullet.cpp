@@ -3,19 +3,26 @@
 #include "MathUtilities.hpp"
 #include "Entity.hpp"
 
+/*
+position->x = playerShip.GetPosition().x + ((cosf(mathUtilities.degreesToRadians(bulletAngle)) +
+playerShip.GetEntityRadius()) * (-sinf(mathUtilities.degreesToRadians(bulletAngle))));
+position->y = playerShip.GetPosition().y + ((-sinf(mathUtilities.degreesToRadians(bulletAngle)) +
+playerShip.GetEntityRadius()) * (cosf(mathUtilities.degreesToRadians(bulletAngle))));
+*/
+
 Bullet::Bullet(Player* ship){
 	MathUtilities math;
 	Vector2 shipPosition = ship->getOrigin();
 	m_angle = ship->getAngle();
 	float radians = math.degToRad(m_angle);
-	m_radius = 10.0f;
+	//m_radius = 10.0f;
 	//float shipRadius = ship->getRadius();
 	m_mass = 1.0f;
-	m_base.x = shipPosition.x + m_radius * -sinf(radians);
-	m_base.y = shipPosition.y + m_radius * cosf(radians);
+	m_base.x = shipPosition.x + ship->getRadius() * -sinf(radians);
+	m_base.y = shipPosition.y + ship->getRadius() * cosf(radians);
 	m_velocity = 120.0f;
 	m_lifespan = 50.0f;
-	m_isAlive = false;
+	m_isAlive = true;
 	//coordenates for the bullet
 	m_bulletContainer.push_back(0.10f*Vector2(0.0f, 10.0f));
 	m_bulletContainer.push_back(0.10f*Vector2(9.0f, 12.0f));

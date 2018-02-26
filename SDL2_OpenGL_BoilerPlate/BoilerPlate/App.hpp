@@ -80,7 +80,7 @@ namespace Engine
 		Player*                             m_ship;
 		std::vector<Asteroid*>				m_asteroids;
 		Vector2								m_colision;
-		Bullet*								m_bullet;
+		std::vector<Bullet*>				m_bullets;
 	};
 }
 #endif /* GAME_HPP */
