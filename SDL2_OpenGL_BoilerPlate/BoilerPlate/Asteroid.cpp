@@ -83,7 +83,7 @@ void Asteroid::ChangeSize() {
 	else if (m_size == BIG)
 		m_size = MEDIUM;
 	for (int i = 0; i < m_asteroidContainer.size(); i++)
-		m_asteroidContainer[i] = m_size * m_asteroidContainer[i];
+		m_asteroidContainer[i] = (1 / m_size) * m_asteroidContainer[i];
 }
 
 void Asteroid::Render() {
