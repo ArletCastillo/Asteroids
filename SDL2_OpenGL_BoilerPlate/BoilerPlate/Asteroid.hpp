@@ -5,9 +5,9 @@
 #include <vector>
 #include "Entity.hpp"
 
-const int SMALL = 1;
-const int MEDIUM = 2;
-const int BIG = 4;
+const float SMALL = 1.0f;
+const float MEDIUM = 2.0f;
+const float BIG = 4.0f;
 
 class  Asteroid: public Entity{
 	private:
@@ -29,6 +29,7 @@ class  Asteroid: public Entity{
 		int GetSize();
 		void DrawLine(Vector2);
 		void AssignPosition(Vector2);
+		void ChangeSize();
 };
 
 #endif // !_ASTEROID_H_

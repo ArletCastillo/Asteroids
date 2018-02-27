@@ -29,9 +29,9 @@ Asteroid::Asteroid() {
 Asteroid::Asteroid(int size){
 	m_base = Vector2(-200.0f, -100.0f);
 	m_angle = 0.0f;
-	if (size == 1)
+	if (size == SMALL)
 		ChangeSize(SMALL);
-	if (size == 2)
+	if (size == MEDIUM)
 		ChangeSize(MEDIUM);
 	m_mass = 1.0f;
 	m_rotation = 100.0f;
@@ -73,6 +73,17 @@ void Asteroid::DrawLine(Vector2 player){
 
 void Asteroid::AssignPosition(Vector2 position){
 	m_base = position;
+}
+
+void Asteroid::ChangeSize() {
+	if (m_size == SMALL)
+		m_size = BIG;
+	else if (m_size == MEDIUM)
+		m_size = SMALL;
+	else if (m_size == BIG)
+		m_size = MEDIUM;
+	for (int i = 0; i < m_asteroidContainer.size(); i++)
+		m_asteroidContainer[i] = m_size * m_asteroidContainer[i];
 }
 
 void Asteroid::Render() {
