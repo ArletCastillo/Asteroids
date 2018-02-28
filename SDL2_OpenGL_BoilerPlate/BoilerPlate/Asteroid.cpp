@@ -77,7 +77,7 @@ void Asteroid::AssignPosition(Vector2 position){
 
 void Asteroid::ChangeSize() {
 	for (int i = 0; i < m_asteroidContainer.size(); i++)
-		m_asteroidContainer[i] = (1 / m_size) * m_asteroidContainer[i];
+		m_asteroidContainer[i] = ((float) 1 / m_size) * m_asteroidContainer[i];
 	m_radius = m_radius / m_size;
 	if (m_size == SMALL)
 		m_size = BIG;

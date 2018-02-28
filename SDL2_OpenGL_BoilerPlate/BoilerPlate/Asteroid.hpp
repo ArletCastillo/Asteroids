@@ -5,9 +5,9 @@
 #include <vector>
 #include "Entity.hpp"
 
-const float SMALL = 1.0f;
-const float MEDIUM = 2.0f;
-const float BIG = 4.0f;
+const int SMALL = 1;
+const int MEDIUM = 2;
+const int BIG = 4;
 
 class  Asteroid: public Entity{
 	private:
