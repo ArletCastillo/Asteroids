@@ -236,6 +236,7 @@ namespace Engine
 				break;
 		}
 		double endTime = m_timer->GetElapsedTimeInSeconds();
+		m_time = DESIRED_FRAME_TIME - (endTime - startTime);
 		UpdateFrame();
 		double nextTimeFrame = startTime + DESIRED_FRAME_TIME;
 
