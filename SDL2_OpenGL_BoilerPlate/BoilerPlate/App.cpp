@@ -182,12 +182,14 @@ namespace Engine
 			}
 		}
 		for (int i = 0; i < m_asteroids.size(); i++) {
+			bool x = false;
 			for (int j = 0; j < m_bullets.size(); j++) {
 				/* if the distance between the asteroid and the bullet is smaller than the sum of their radius 
 				(meaning that they are really close) */
 				if ((m_collision.Distance(m_asteroids[i]->getOrigin(), m_bullets[j]->getOrigin())) 
 					<= (m_asteroids[i]->getRadius() + m_bullets[j]->getRadius())) {
 					m_bullets.erase(m_bullets.begin() + j);
+					x = true;
 					//checks if the asteroid is not small
 					if (m_asteroids[i]->GetSize() != 1) {
 						m_asteroids[i]->ChangeSize();
@@ -198,8 +200,11 @@ namespace Engine
 						//if it's small, then erases the asteroid
 						m_asteroids.erase(m_asteroids.begin() + i);
 					}
+					break;
 				}
 			}
+			if (x == true)
+				break;
 		}
 		double endTime = m_timer->GetElapsedTimeInSeconds();
 		double nextTimeFrame = startTime + DESIRED_FRAME_TIME;

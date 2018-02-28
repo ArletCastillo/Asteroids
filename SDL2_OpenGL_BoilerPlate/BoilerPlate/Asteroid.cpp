@@ -9,7 +9,7 @@ Asteroid::Asteroid() {
 	ChangeSize(BIG);
 	m_mass = 1.0f;
 	m_rotation = 100.0f;
-	m_radius = 60.0f;
+	m_radius = 20.0f * m_size;
 	//coordenates for the asteroid
 	m_asteroidContainer.push_back(m_size*Vector2(0.0f, 10.0f));
 	m_asteroidContainer.push_back(m_size*Vector2(9.0f, 12.0f));
@@ -35,7 +35,7 @@ Asteroid::Asteroid(int size){
 		ChangeSize(MEDIUM);
 	m_mass = 1.0f;
 	m_rotation = 100.0f;
-	m_radius = 60.0f;
+	m_radius = 20.0f * m_size;
 	//coordenates for the asteroid
 	m_asteroidContainer.push_back(m_size*Vector2(0.0f, 10.0f));
 	m_asteroidContainer.push_back(m_size*Vector2(9.0f, 12.0f));
@@ -76,6 +76,9 @@ void Asteroid::AssignPosition(Vector2 position){
 }
 
 void Asteroid::ChangeSize() {
+	for (int i = 0; i < m_asteroidContainer.size(); i++)
+		m_asteroidContainer[i] = (1 / m_size) * m_asteroidContainer[i];
+	m_radius = m_radius / m_size;
 	if (m_size == SMALL)
 		m_size = BIG;
 	else if (m_size == MEDIUM)
@@ -83,7 +86,8 @@ void Asteroid::ChangeSize() {
 	else if (m_size == BIG)
 		m_size = MEDIUM;
 	for (int i = 0; i < m_asteroidContainer.size(); i++)
-		m_asteroidContainer[i] = (1 / m_size) * m_asteroidContainer[i];
+		m_asteroidContainer[i] = m_size * m_asteroidContainer[i];
+	m_radius = m_radius * m_size;
 }
 
 void Asteroid::Render() {
@@ -96,6 +100,7 @@ void Asteroid::Render() {
 	glEnd();
 
 	if(activateCircle == true)
+
 		DrawCircle(m_base.x, m_base.y, m_radius);
 }
 
