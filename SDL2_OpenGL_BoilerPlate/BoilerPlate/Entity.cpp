@@ -1,10 +1,7 @@
 #include "Entity.hpp"
 #include <cmath>
 #include "MathUtilities.hpp"
-#include <SDL2/SDL_opengl.h>
-
-const int SCREEN_WIDHT = 1136;
-const int SCREEN_HEIGHT = 640;
+#include <SDL_opengl.h>
 
 void Entity::Render(){
 }
@@ -16,8 +13,8 @@ void Entity::Update(float time){
 	m_halfWidth = SCREEN_WIDHT / 2.0f;
 	m_halfHeight = SCREEN_HEIGHT / 2.0f;
 
-	Wrap(m_base.x, -m_halfWidth, m_halfWidth);
-	Wrap(m_base.y, -m_halfHeight, m_halfHeight);
+	Wrap(m_base.x, -m_width, m_width);
+	Wrap(m_base.y, -m_height, m_height);
 }
 
 void Entity::Wrap(float& vertex, float min, float max) {
@@ -43,16 +40,29 @@ void Entity::RotateRight() {
 	m_angle -= 5.0f;
 }
 
-Vector2 Entity::getOrigin(){
+Vector2 Entity::GetOrigin(){
 	return m_base;
 }
 
-float Entity::getRadius(){
+float Entity::GetRadius(){
 	return m_radius;
 }
 
-float Entity::getAngle(){
+float Entity::GetAngle(){
 	return m_angle;
+}
+
+bool Entity::GetDrawLine(){
+	return m_drawLine;
+}
+
+void Entity::SetDrawLine(bool boolValue){
+	m_drawLine = boolValue;
+}
+
+void Entity::UpdateWrap(float width, float height){
+	m_width = width/2;
+	m_height = height/2;
 }
 
 void Entity::DrawCircle(float x, float y, float radius){

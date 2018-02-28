@@ -1,20 +1,22 @@
 #include "Bullet.hpp"
-#include <SDL2/SDL_opengl.h>
+#include <SDL_opengl.h>
 #include "MathUtilities.hpp"
 #include "Entity.hpp"
 
 Bullet::Bullet(Player* ship){
 	MathUtilities math;
-	Vector2 shipPosition = ship->getOrigin();
-	m_angle = ship->getAngle();
+	Vector2 shipPosition = ship->GetOrigin();
+	m_angle = ship->GetAngle();
 	float radians = math.degToRad(m_angle);
 	m_radius = 3.0f;
 	m_mass = 1.0f;
-	m_base.x = shipPosition.x + ship->getRadius() * -sinf(radians);
-	m_base.y = shipPosition.y + ship->getRadius() * cosf(radians);
+	m_base.x = shipPosition.x + ship->GetRadius() * -sinf(radians);
+	m_base.y = shipPosition.y + ship->GetRadius() * cosf(radians);
 	m_velocity = 0.0f;
-	m_lifespan = 100.0f;
+	m_lifespan = 70.0f;
 	m_isAlive = true;
+	m_width = SCREEN_WIDHT / 2;
+	m_height = SCREEN_HEIGHT / 2;
 	//coordenates for the bullet
 	m_bulletContainer.push_back(0.10f*Vector2(0.0f, 10.0f));
 	m_bulletContainer.push_back(0.10f*Vector2(9.0f, 12.0f));

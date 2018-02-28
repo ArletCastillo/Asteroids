@@ -1,5 +1,5 @@
 #include "Player.hpp"
-#include <SDL2/SDL_opengl.h>
+#include <SDL_opengl.h>
 #include <cmath>
 #include "MathUtilities.hpp"
 
@@ -18,6 +18,8 @@ Player::Player() {
 	m_angle = 0.0f;
 	m_mass = 2.0f;
 	m_radius = 15.0f;
+	m_width = SCREEN_WIDHT / 2;
+	m_height = SCREEN_HEIGHT / 2;
 	//ship's coordenates
 	m_shipContainer.push_back(Vector2(0.0f, 20.0f));
 	m_shipContainer.push_back(Vector2(12.0f, -10.0f));

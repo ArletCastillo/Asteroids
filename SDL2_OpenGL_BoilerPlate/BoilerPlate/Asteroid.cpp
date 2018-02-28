@@ -1,6 +1,6 @@
 #include "Asteroid.hpp"
 #include "Player.hpp"
-#include <SDL2/SDL_opengl.h>
+#include <SDL_opengl.h>
 #include "MathUtilities.hpp"
 
 Asteroid::Asteroid() {
@@ -10,6 +10,8 @@ Asteroid::Asteroid() {
 	m_mass = 1.0f;
 	m_rotation = 100.0f;
 	m_radius = 20.0f * m_size;
+	m_width = SCREEN_WIDHT / 2;
+	m_height = SCREEN_HEIGHT / 2;
 	//coordenates for the asteroid
 	m_asteroidContainer.push_back(m_size*Vector2(0.0f, 10.0f));
 	m_asteroidContainer.push_back(m_size*Vector2(9.0f, 12.0f));
@@ -36,6 +38,8 @@ Asteroid::Asteroid(int size){
 	m_mass = 1.0f;
 	m_rotation = 100.0f;
 	m_radius = 20.0f * m_size;
+	m_width = SCREEN_WIDHT / 2;
+	m_height = SCREEN_HEIGHT / 2;
 	//coordenates for the asteroid
 	m_asteroidContainer.push_back(m_size*Vector2(0.0f, 10.0f));
 	m_asteroidContainer.push_back(m_size*Vector2(9.0f, 12.0f));
