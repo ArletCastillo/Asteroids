@@ -2,9 +2,10 @@
 #include "Player.hpp"
 #include <SDL_opengl.h>
 #include "MathUtilities.hpp"
+#include <cmath>
 
 Asteroid::Asteroid() {
-	m_base = Vector2(-200.0f, -100.0f);
+	m_base = Vector2(rand(), rand());
 	m_angle = 0.0f;
 	ChangeSize(BIG);
 	m_mass = 1.0f;
@@ -29,7 +30,7 @@ Asteroid::Asteroid() {
 }
 
 Asteroid::Asteroid(int size){
-	m_base = Vector2(-200.0f, -100.0f);
+	m_base = Vector2(rand(), rand());
 	m_angle = 0.0f;
 	if (size == SMALL)
 		ChangeSize(SMALL);
