@@ -32,7 +32,13 @@ namespace Engine
 		m_state = GameState::UNINITIALIZED;
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
 		CreateEntity();
-		
+		m_cpt_frames = std::vector<Vector2>(MAX_FRAME_COUNT);
+		for (int x = 0; x < MAX_FRAME_COUNT; x++)
+		{
+			m_cpt_frames[x] = Vector2((float)x, 0.0f);
+		}
+		m_current_frame_position = 0;
+		m_time = DESIRED_FRAME_RATE;
 	}
 
 	App::~App()
@@ -166,6 +172,29 @@ namespace Engine
 		m_asteroids[m_asteroids.size() - 1]->AssignPosition(position);
 	}
 
+	void App::UpdateFrame(){
+		m_cpt_frames[m_current_frame_position] = Vector2((float)m_current_frame_position, m_time);
+		m_current_frame_position++;
+		if (m_current_frame_position >= MAX_FRAME_COUNT)
+			m_current_frame_position = 0;
+	}
+
+	void App::GetFrameRate(){
+		glLoadIdentity();
+		glTranslatef(X_AXIS_POSITION, Y_AXIS_POSITION, 0.0f);
+		glBegin(GL_LINE_STRIP);
+		glVertex2f(0.0f, 100.0f);
+		glVertex2f(0.0f, 0.0f);
+		glVertex2f(130.0f, 0.0f);
+		glEnd();
+
+		glBegin(GL_LINE_STRIP);
+		for (int i = 0; i < MAX_FRAME_COUNT; i++)
+			glVertex2f(10.0f * m_cpt_frames[i].x, 100000.0f * (DESIRED_FRAME_TIME - m_cpt_frames[i].y));
+		glEnd();
+		
+	}
+
 	void App::Update()
 	{
 		double startTime = m_timer->GetElapsedTimeInSeconds();
@@ -207,6 +236,7 @@ namespace Engine
 				break;
 		}
 		double endTime = m_timer->GetElapsedTimeInSeconds();
+		UpdateFrame();
 		double nextTimeFrame = startTime + DESIRED_FRAME_TIME;
 
 		while (endTime < nextTimeFrame)
@@ -243,6 +273,7 @@ namespace Engine
 		glClearColor(c.Dark_aqua().r, c.Dark_aqua().g, c.Dark_aqua().b, c.Dark_aqua().a);
 		glClear(GL_COLOR_BUFFER_BIT);
 		RenderEntity();
+		GetFrameRate();
 		if(m_activateLine == true)
 			for (int i = 0; i < m_asteroids.size(); i++)
 				m_asteroids[i]->DrawLine(m_ship->getOrigin());
