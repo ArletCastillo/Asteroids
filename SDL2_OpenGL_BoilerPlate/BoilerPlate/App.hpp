@@ -70,6 +70,7 @@ namespace Engine
 		void UpdateFrame					( );
 		void GetFrameRate					( );
 		void Input							( );
+		void RenderLives					( );
 		/* =============================================================
 		 * MEMBERS
 		 * ============================================================= */
@@ -77,6 +78,7 @@ namespace Engine
 		int									m_height;
 		int									m_nUpdates;
 		int									m_current_frame_position;
+		int									m_life;
 		double								m_lastFrameTime;
 		bool								m_activateLine;
 		bool								m_activateColision;

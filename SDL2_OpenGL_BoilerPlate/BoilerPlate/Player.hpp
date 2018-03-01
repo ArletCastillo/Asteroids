@@ -6,6 +6,9 @@
 #include <vector>
 #include "Entity.hpp"
 
+const float MAXIMUM_SPEED = 350.0f;
+const float ANGLE = 90.0f;
+
 class  Player: public Entity{
 	private:
 		//members
@@ -25,6 +28,7 @@ class  Player: public Entity{
 		void Render() override;
 		void Update(float) override;
 		void Thruster();
+		std::vector<Vector2> ObtainLives();
 };
 #endif // !_PLAYER_H_
 

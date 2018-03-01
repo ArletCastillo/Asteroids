@@ -23,6 +23,7 @@ namespace Engine
 
 	App::App(const std::string& title, const int width, const int height)
 		: m_title(title)
+		, m_life(5)
 		, m_activateColision(true)
 		, m_isShot(true)
 		, m_debug(false)
@@ -259,6 +260,7 @@ namespace Engine
 					<= (m_ship->GetRadius() + m_asteroids[i]->GetRadius())) {
 					m_asteroids.erase(m_asteroids.begin() + i);
 					m_activateColision = false;
+					m_life--;
 				}
 			}
 		}
@@ -297,6 +299,8 @@ namespace Engine
 				}
 			}
 		}
+		if (m_life <= 0)
+			m_activateColision = false;
 		double endTime = m_timer->GetElapsedTimeInSeconds();
 		m_time = DESIRED_FRAME_TIME - (endTime - startTime);
 		UpdateFrame();
@@ -331,6 +335,23 @@ namespace Engine
 		}	
 	}
 
+	void App::RenderLives() {
+		std::vector<Vector2> livesPoints = m_ship->ObtainLives();
+		float size = 0.5f;
+		float hWidth = (float)m_width / 2.0f;
+		float hHeight = (float)m_height / 2.0f;
+		glLoadIdentity();
+		glTranslatef(hWidth, hHeight, 0.0f);
+		Colors c;
+		glColor3f(c.Baby_blue().r, c.Baby_blue().g, c.Baby_blue().b);
+		for (int i = 0; i < m_life; i++) {
+			glBegin(GL_LINE_LOOP);
+			for (int j = 0; j < livesPoints.size(); j++)
+				glVertex2f(size*livesPoints[j].x - 30 * (i + 1), size*livesPoints[j].y - 20);
+			glEnd();
+		}
+	}
+
 	void App::Render()
 	{
 		//glClearColor(0.1f, 0.1f, 0.15f, 1.0f)
@@ -338,6 +359,7 @@ namespace Engine
 		glClearColor(c.Dark_aqua().r, c.Dark_aqua().g, c.Dark_aqua().b, c.Dark_aqua().a);
 		glClear(GL_COLOR_BUFFER_BIT);
 		RenderEntity();
+		RenderLives();
 		if(m_bFrame)
 			GetFrameRate();
 		for (int i = 0; i < m_asteroids.size(); i++) {
