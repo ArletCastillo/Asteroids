@@ -116,10 +116,11 @@ namespace Engine
 			m_inputManager.SetD(true);
 			break;
 		case SDL_SCANCODE_Q:
-			m_inputManager.SetQ(true);
+			m_asteroids.push_back(new Asteroid()); //spawns new
 			break;
 		case SDL_SCANCODE_E:
-			m_inputManager.SetE(true);
+			if (m_asteroids.size()>0) //if the vector has asteroids, then remove them.
+				m_asteroids.pop_back();
 			break;
 		case SDL_SCANCODE_G:
 			m_inputManager.SetG(true);
@@ -131,7 +132,8 @@ namespace Engine
 			m_inputManager.SetZ(true);
 			break;
 		case SDL_SCANCODE_SPACE:
-			m_inputManager.SetSpace(true);
+			if (m_activateColision)
+				m_bullets.push_back(new Bullet(m_ship));
 			break;
 		default:			
 			SDL_Log("%S was pressed...", keyBoardEvent.keysym.scancode);
@@ -148,7 +150,26 @@ namespace Engine
 			break;
 		case SDL_SCANCODE_W:
 			m_ship->activateThruster = false;
-			break;			
+			m_inputManager.SetW(false);
+			break;
+		case SDL_SCANCODE_A:
+			m_inputManager.SetA(false);
+			break;
+		case SDL_SCANCODE_S:
+			m_inputManager.SetS(false);
+			break;
+		case SDL_SCANCODE_D:
+			m_inputManager.SetD(false);
+			break;
+		case SDL_SCANCODE_G:
+			m_inputManager.SetG(false);
+			break;
+		case SDL_SCANCODE_F:
+			m_inputManager.SetF(false);
+			break;
+		case SDL_SCANCODE_Z:
+			m_inputManager.SetZ(false);
+			break;
 		default:
 			//DO NOTHING
 			break;
@@ -203,13 +224,7 @@ namespace Engine
 				m_bFrame = false;
 		}
 		if(m_inputManager.GetD())
-			m_ship->RotateRight();
-		if(m_inputManager.GetQ())
-			m_asteroids.push_back(new Asteroid()); //spawns new 
-		if (m_inputManager.GetE()) {
-			if (m_asteroids.size()>0) //if the vector has asteroids, then remove them.
-				m_asteroids.pop_back();
-		}
+			m_ship->RotateRight();			 
 		if (m_inputManager.GetG()) {
 			//enters the debbug mode
 			m_debug = true;
@@ -227,10 +242,6 @@ namespace Engine
 		}
 		if(m_inputManager.GetZ())
 			m_activateColision = true;
-		if (m_inputManager.GetSpace()) {
-			if (m_activateColision)
-				m_bullets.push_back(new Bullet(m_ship));
-		}
 	}
 
 	void App::Update()
