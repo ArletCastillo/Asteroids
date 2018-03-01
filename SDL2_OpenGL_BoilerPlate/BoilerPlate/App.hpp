@@ -15,6 +15,11 @@
 #include "Vector2.hpp"
 #include <vector>
 #include "Bullet.hpp"
+#include "InputManager.hpp"
+
+const int MAX_FRAME_COUNT = 15;
+const int X_AXIS_POSITION = 100;
+const int Y_AXIS_POSITION = -200;
 
 namespace Engine
 {
@@ -46,10 +51,6 @@ namespace Engine
 		bool Init							( );
 		void Update							( );
 		void Render							( );
-		void CreateEntity					( );
-		void UpdateEntity					( );
-		void RenderEntity					( );
-		void CreateAsteroidWithPosition		(Vector2, int);
 	private:
 		/* =============================================================
 		 * PRIVATE FUNCTIONS
@@ -62,18 +63,28 @@ namespace Engine
 		void OnExit							( ) override;
 		void OnKeyDown						( SDL_KeyboardEvent keyBoardEvent ) override;
 		void OnKeyUp						( SDL_KeyboardEvent keyBoardEvent ) override;
-
-
+		void CreateEntity					( );
+		void UpdateEntity					( );
+		void RenderEntity					( );
+		void CreateAsteroidWithPosition		(Vector2, int);
+		void UpdateFrame					( );
+		void GetFrameRate					( );
+		void Input							( );
 		/* =============================================================
 		 * MEMBERS
 		 * ============================================================= */
 		int									m_width;
 		int									m_height;
 		int									m_nUpdates;
+		int									m_current_frame_position;
 		double								m_lastFrameTime;
 		bool								m_activateLine;
 		bool								m_activateColision;
 		bool								m_isShot;
+		bool								m_debug;
+		bool								m_bFrame;
+		bool								m_graph;
+		float								m_time;
 		std::string							m_title;
 		SDL_Window*							m_mainWindow;
 		SDL_GLContext						m_context;
@@ -82,7 +93,9 @@ namespace Engine
 		Player*                             m_ship;
 		std::vector<Asteroid*>				m_asteroids;
 		Vector2								m_collision;
+		std::vector<Vector2>				m_cpt_frames;
 		std::vector<Bullet*>				m_bullets;
+		InputManager						m_inputManager;
 	};
 }
 #endif /* GAME_HPP */

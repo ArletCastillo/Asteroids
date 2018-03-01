@@ -7,7 +7,9 @@
 
 // OpenGL includes
 #include <GL/glew.h>
-#include <SDL2/SDL_opengl.h>
+#include <SDL_opengl.h>
+#include <SDL.h>
+#include <SDL_ttf.h>
 
 namespace Engine
 {
@@ -23,6 +25,8 @@ namespace Engine
 		: m_title(title)
 		, m_activateColision(true)
 		, m_isShot(true)
+		, m_debug(false)
+		, m_bFrame(false)
 		, m_width(width)
 		, m_height(height)
 		, m_nUpdates(0)
@@ -32,7 +36,13 @@ namespace Engine
 		m_state = GameState::UNINITIALIZED;
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
 		CreateEntity();
-		
+		m_cpt_frames = std::vector<Vector2>(MAX_FRAME_COUNT);
+		for (int x = 0; x < MAX_FRAME_COUNT; x++)
+		{
+			m_cpt_frames[x] = Vector2((float)x, 0.0f);
+		}
+		m_current_frame_position = 0;
+		m_time = DESIRED_FRAME_RATE;
 	}
 
 	App::~App()
@@ -93,43 +103,37 @@ namespace Engine
 		switch (keyBoardEvent.keysym.scancode)
 		{
 		case SDL_SCANCODE_W:
-			m_ship->MoveForward();
 			m_ship->activateThruster = true;
+			m_inputManager.SetW(true);
 			break;
 		case SDL_SCANCODE_A:
-			m_ship->RotateLeft();
+			m_inputManager.SetA(true);
 			break;
 		case SDL_SCANCODE_S:
+			m_inputManager.SetS(true);
 			break;
 		case SDL_SCANCODE_D:
-			m_ship->RotateRight();
+			m_inputManager.SetD(true);
 			break;
 		case SDL_SCANCODE_Q:
-			m_asteroids.push_back(new Asteroid());
+			m_asteroids.push_back(new Asteroid()); //spawns new
 			break;
 		case SDL_SCANCODE_E:
 			if (m_asteroids.size()>0) //if the vector has asteroids, then remove them.
 				m_asteroids.pop_back();
 			break;
 		case SDL_SCANCODE_G:
-			m_activateLine = true;
-			m_ship->activateCircle = true;
-			for (int i = 0; i < m_asteroids.size(); i++)
-				m_asteroids[i]->activateCircle = true;
-			for (int i = 0; i < m_bullets.size(); i++)
-				m_bullets[i]->activateCircle = true;
+			m_inputManager.SetG(true);
 			break;
 		case SDL_SCANCODE_F:
-			m_activateLine = false;
-			m_ship->activateCircle = false;
-			for (int i = 0; i < m_asteroids.size(); i++)
-				m_asteroids[i]->activateCircle = false;
+			m_inputManager.SetF(true);
 			break;
 		case SDL_SCANCODE_Z:
-			m_activateColision = true;
+			m_inputManager.SetZ(true);
 			break;
 		case SDL_SCANCODE_SPACE:
-			m_bullets.push_back(new Bullet(m_ship));
+			if (m_activateColision)
+				m_bullets.push_back(new Bullet(m_ship));
 			break;
 		default:			
 			SDL_Log("%S was pressed...", keyBoardEvent.keysym.scancode);
@@ -146,7 +150,26 @@ namespace Engine
 			break;
 		case SDL_SCANCODE_W:
 			m_ship->activateThruster = false;
-			break;			
+			m_inputManager.SetW(false);
+			break;
+		case SDL_SCANCODE_A:
+			m_inputManager.SetA(false);
+			break;
+		case SDL_SCANCODE_S:
+			m_inputManager.SetS(false);
+			break;
+		case SDL_SCANCODE_D:
+			m_inputManager.SetD(false);
+			break;
+		case SDL_SCANCODE_G:
+			m_inputManager.SetG(false);
+			break;
+		case SDL_SCANCODE_F:
+			m_inputManager.SetF(false);
+			break;
+		case SDL_SCANCODE_Z:
+			m_inputManager.SetZ(false);
+			break;
 		default:
 			//DO NOTHING
 			break;
@@ -166,42 +189,117 @@ namespace Engine
 		m_asteroids[m_asteroids.size() - 1]->AssignPosition(position);
 	}
 
+	void App::UpdateFrame(){
+		m_cpt_frames[m_current_frame_position] = Vector2((float)m_current_frame_position, m_time);
+		m_current_frame_position++;
+		if (m_current_frame_position >= MAX_FRAME_COUNT)
+			m_current_frame_position = 0;
+	}
+
+	void App::GetFrameRate(){
+		glLoadIdentity();
+		glTranslatef(X_AXIS_POSITION, Y_AXIS_POSITION, 0.0f);
+		glBegin(GL_LINE_STRIP);
+		glVertex2f(0.0f, 100.0f);
+		glVertex2f(0.0f, 0.0f);
+		glVertex2f(130.0f, 0.0f);
+		glEnd();
+
+		glBegin(GL_LINE_STRIP);
+		for (int i = 0; i < MAX_FRAME_COUNT; i++)
+			glVertex2f(10.0f * m_cpt_frames[i].x, 100000.0f * (DESIRED_FRAME_TIME - m_cpt_frames[i].y));
+		glEnd();
+		
+	}
+
+	void App::Input(){
+		if(m_inputManager.GetW())
+			m_ship->MoveForward();
+		if(m_inputManager.GetA())
+			m_ship->RotateLeft();
+		if (m_inputManager.GetS()) {
+			if (!m_bFrame)
+				m_bFrame = true;
+			else
+				m_bFrame = false;
+		}
+		if(m_inputManager.GetD())
+			m_ship->RotateRight();			 
+		if (m_inputManager.GetG()) {
+			//enters the debbug mode
+			m_debug = true;
+			m_ship->activateCircle = true;
+			for (int i = 0; i < m_bullets.size(); i++)
+				m_bullets[i]->activateCircle = true;
+		}
+		if (m_inputManager.GetF()) {
+			//exits debugg mode
+			m_debug = false;
+			m_activateLine = false;
+			m_ship->activateCircle = false;
+			for (int i = 0; i < m_asteroids.size(); i++)
+				m_asteroids[i]->activateCircle = false;
+		}
+		if(m_inputManager.GetZ())
+			m_activateColision = true;
+	}
+
 	void App::Update()
 	{
 		double startTime = m_timer->GetElapsedTimeInSeconds();
 
 		// Update code goes here
+		Input();
 		UpdateEntity();
-		for (int i = 0; i < m_asteroids.size(); i++) {
-			/* if the distance between the ship and the asteroid is smaller than the sum of their radius 
-			(meaning that they are really close) erase the asteroid */
-			if ((m_collision.Distance(m_ship->getOrigin(), m_asteroids[i]->getOrigin())) 
-				 <= (m_ship->getRadius() + m_asteroids[i]->getRadius())) {
-				m_asteroids.erase(m_asteroids.begin() + i);
-				m_activateColision = false;
+		if (m_activateColision && !m_debug) {
+			for (int i = 0; i < m_asteroids.size(); i++) {
+				/* if the distance between the ship and the asteroid is smaller than the sum of their radius
+				(meaning that they are really close) erase the asteroid */
+				if ((m_collision.Distance(m_ship->GetOrigin(), m_asteroids[i]->GetOrigin()))
+					<= (m_ship->GetRadius() + m_asteroids[i]->GetRadius())) {
+					m_asteroids.erase(m_asteroids.begin() + i);
+					m_activateColision = false;
+				}
 			}
 		}
 		for (int i = 0; i < m_asteroids.size(); i++) {
+			bool x = false;
 			for (int j = 0; j < m_bullets.size(); j++) {
 				/* if the distance between the asteroid and the bullet is smaller than the sum of their radius 
 				(meaning that they are really close) */
-				if ((m_collision.Distance(m_asteroids[i]->getOrigin(), m_bullets[j]->getOrigin())) 
-					<= (m_asteroids[i]->getRadius() + m_bullets[j]->getRadius())) {
+				if ((m_collision.Distance(m_asteroids[i]->GetOrigin(), m_bullets[j]->GetOrigin())) 
+					<= (m_asteroids[i]->GetRadius() + m_bullets[j]->GetRadius())) {
 					m_bullets.erase(m_bullets.begin() + j);
+					x = true;
 					//checks if the asteroid is not small
 					if (m_asteroids[i]->GetSize() != 1) {
 						m_asteroids[i]->ChangeSize();
 						int newSize = m_asteroids[i]->GetSize();
-						CreateAsteroidWithPosition(m_asteroids[i]->getOrigin(), m_asteroids[i]->GetSize());
+						CreateAsteroidWithPosition(m_asteroids[i]->GetOrigin(), m_asteroids[i]->GetSize());
 					}
 					else {
 						//if it's small, then erases the asteroid
 						m_asteroids.erase(m_asteroids.begin() + i);
 					}
+					break;
+				}
+			}
+			if (x == true)
+				break;
+		}
+		if (m_debug) {
+			for (int i = 0; i < m_asteroids.size(); i++) {
+				/* if the distance between the ship and the asteroid is smaller than the sum of their radius
+				(meaning that they are really close) erase the asteroid */
+				if ((m_collision.Distance(m_ship->GetOrigin(), m_asteroids[i]->GetOrigin()))
+					<= 2*(m_ship->GetRadius() + m_asteroids[i]->GetRadius())) {
+					m_asteroids[i]->SetDrawLine(true);
 				}
 			}
 		}
 		double endTime = m_timer->GetElapsedTimeInSeconds();
+		m_time = DESIRED_FRAME_TIME - (endTime - startTime);
+		UpdateFrame();
 		double nextTimeFrame = startTime + DESIRED_FRAME_TIME;
 
 		while (endTime < nextTimeFrame)
@@ -221,6 +319,8 @@ namespace Engine
 		if (m_activateColision == true)
 			m_ship->Render();
 		for (int i = 0; i < m_asteroids.size(); i++) {
+			if (m_debug) 
+				m_asteroids[i]->activateCircle = true;
 			m_asteroids[i]->Render();
 		}
 		for (int i = 0; i < m_bullets.size(); i++) {
@@ -238,9 +338,13 @@ namespace Engine
 		glClearColor(c.Dark_aqua().r, c.Dark_aqua().g, c.Dark_aqua().b, c.Dark_aqua().a);
 		glClear(GL_COLOR_BUFFER_BIT);
 		RenderEntity();
-		if(m_activateLine == true)
-			for (int i = 0; i < m_asteroids.size(); i++)
-				m_asteroids[i]->DrawLine(m_ship->getOrigin());
+		if(m_bFrame)
+			GetFrameRate();
+		for (int i = 0; i < m_asteroids.size(); i++) {
+			if (m_asteroids[i]->GetDrawLine() == true)
+				m_asteroids[i]->DrawLine(m_ship->GetOrigin());
+			m_asteroids[i]->SetDrawLine(false);
+		}
 		SDL_GL_SwapWindow(m_mainWindow);
 	}
 
@@ -339,6 +443,14 @@ namespace Engine
 		//
 		m_width = width;
 		m_height = height;
+
+		for (int i = 0; i < m_bullets.size(); i++)
+			m_bullets[i]->UpdateWrap(m_width, m_height);
+
+		for (int i = 0; i < m_asteroids.size(); i++)
+			m_asteroids[i]->UpdateWrap(m_width, m_height);
+
+		m_ship->UpdateWrap(m_width, m_height);
 
 		SetupViewport();
 	}
