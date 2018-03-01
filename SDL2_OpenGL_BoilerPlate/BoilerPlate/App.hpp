@@ -16,6 +16,7 @@
 #include <vector>
 #include "Bullet.hpp"
 #include "InputManager.hpp"
+#include "Color.hpp"
 
 const int MAX_FRAME_COUNT = 15;
 const int X_AXIS_POSITION = 100;

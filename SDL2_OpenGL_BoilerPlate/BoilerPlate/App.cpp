@@ -15,6 +15,10 @@ namespace Engine
 {
 	const float DESIRED_FRAME_RATE = 60.0f;
 	const float DESIRED_FRAME_TIME = 1.0f / DESIRED_FRAME_RATE;
+	Colors background;
+	Colors line;
+	Color changeBackground(0.0f, 0.0f, 0.0f, 0.0f);
+	Color changeLine(1.0f, 1.0f, 1.0f, 1.0f);
 
 	void App::CreateEntity() {
 		m_ship = new Player();
@@ -170,6 +174,26 @@ namespace Engine
 			break;
 		case SDL_SCANCODE_Z:
 			m_inputManager.SetZ(false);
+			break;
+		case SDL_SCANCODE_X:
+			changeBackground = background.Baby_blue();
+			changeLine = line.Midnight();
+			break;
+		case SDL_SCANCODE_C:
+			changeBackground = background.Cherry_blossom();
+			changeLine = line.Dark_red();
+			break;
+		case SDL_SCANCODE_V:
+			changeBackground = background.Dark_aqua();
+			changeLine = line.Baby_blue();
+			break;
+		case SDL_SCANCODE_B:
+			changeBackground = background.Dark_red();
+			changeLine = line.Cherry_blossom();
+			break;
+		case SDL_SCANCODE_N:
+			changeBackground = background.Midnight();
+			changeLine = line.Baby_blue();
 			break;
 		default:
 			//DO NOTHING
@@ -342,8 +366,7 @@ namespace Engine
 		float hHeight = (float)m_height / 2.0f;
 		glLoadIdentity();
 		glTranslatef(hWidth, hHeight, 0.0f);
-		Colors c;
-		glColor3f(c.Baby_blue().r, c.Baby_blue().g, c.Baby_blue().b);
+		glColor3f(changeLine.r, changeLine.g, changeLine.b);
 		for (int i = 0; i < m_life; i++) {
 			glBegin(GL_LINE_LOOP);
 			for (int j = 0; j < livesPoints.size(); j++)
@@ -356,7 +379,8 @@ namespace Engine
 	{
 		//glClearColor(0.1f, 0.1f, 0.15f, 1.0f)
 		Colors c;
-		glClearColor(c.Dark_aqua().r, c.Dark_aqua().g, c.Dark_aqua().b, c.Dark_aqua().a);
+		glClearColor(changeBackground.r, changeBackground.g, changeBackground.b, changeBackground.a);
+		glColor3f(changeLine.r, changeLine.g, changeLine.b);
 		glClear(GL_COLOR_BUFFER_BIT);
 		RenderEntity();
 		RenderLives();
