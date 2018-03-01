@@ -193,6 +193,7 @@ copy /Y "$(SolutionDir)\Externals\SDL2_ttf-2.0.14\lib\x64\zlib1.dll" "$(TargetDi
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Colors.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MathUtilities.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -210,6 +211,7 @@ copy /Y "$(SolutionDir)\Externals\SDL2_ttf-2.0.14\lib\x64\zlib1.dll" "$(TargetDi
     <ClInclude Include="Color.hpp" />
     <ClInclude Include="Colors.hpp" />
     <ClInclude Include="Entity.hpp" />
+    <ClInclude Include="InputManager.hpp" />
     <ClInclude Include="MathUtilities.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="SDLEvent.hpp" />

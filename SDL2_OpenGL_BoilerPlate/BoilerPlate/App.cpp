@@ -103,47 +103,35 @@ namespace Engine
 		switch (keyBoardEvent.keysym.scancode)
 		{
 		case SDL_SCANCODE_W:
-			m_ship->MoveForward();
 			m_ship->activateThruster = true;
+			m_inputManager.SetW(true);
 			break;
 		case SDL_SCANCODE_A:
-			m_ship->RotateLeft();
+			m_inputManager.SetA(true);
 			break;
 		case SDL_SCANCODE_S:
-			if (!m_bFrame)
-				m_bFrame = true;
-			else
-				m_bFrame = false;
+			m_inputManager.SetS(true);
 			break;
 		case SDL_SCANCODE_D:
-			m_ship->RotateRight();
+			m_inputManager.SetD(true);
 			break;
 		case SDL_SCANCODE_Q:
-			m_asteroids.push_back(new Asteroid());
+			m_inputManager.SetQ(true);
 			break;
 		case SDL_SCANCODE_E:
-			if (m_asteroids.size()>0) //if the vector has asteroids, then remove them.
-				m_asteroids.pop_back();
+			m_inputManager.SetE(true);
 			break;
 		case SDL_SCANCODE_G:
-			m_debug = true;
-			m_ship->activateCircle = true;				
-			for (int i = 0; i < m_bullets.size(); i++)
-				m_bullets[i]->activateCircle = true;
+			m_inputManager.SetG(true);
 			break;
 		case SDL_SCANCODE_F:
-			m_debug = false;
-			m_activateLine = false;
-			m_ship->activateCircle = false;
-			for (int i = 0; i < m_asteroids.size(); i++)
-				m_asteroids[i]->activateCircle = false;
+			m_inputManager.SetF(true);
 			break;
 		case SDL_SCANCODE_Z:
-			m_activateColision = true;
+			m_inputManager.SetZ(true);
 			break;
 		case SDL_SCANCODE_SPACE:
-			if(m_activateColision)
-				m_bullets.push_back(new Bullet(m_ship));
+			m_inputManager.SetSpace(true);
 			break;
 		default:			
 			SDL_Log("%S was pressed...", keyBoardEvent.keysym.scancode);
@@ -203,11 +191,54 @@ namespace Engine
 		
 	}
 
+	void App::Input(){
+		if(m_inputManager.GetW())
+			m_ship->MoveForward();
+		if(m_inputManager.GetA())
+			m_ship->RotateLeft();
+		if (m_inputManager.GetS()) {
+			if (!m_bFrame)
+				m_bFrame = true;
+			else
+				m_bFrame = false;
+		}
+		if(m_inputManager.GetD())
+			m_ship->RotateRight();
+		if(m_inputManager.GetQ())
+			m_asteroids.push_back(new Asteroid()); //spawns new 
+		if (m_inputManager.GetE()) {
+			if (m_asteroids.size()>0) //if the vector has asteroids, then remove them.
+				m_asteroids.pop_back();
+		}
+		if (m_inputManager.GetG()) {
+			//enters the debbug mode
+			m_debug = true;
+			m_ship->activateCircle = true;
+			for (int i = 0; i < m_bullets.size(); i++)
+				m_bullets[i]->activateCircle = true;
+		}
+		if (m_inputManager.GetF()) {
+			//exits debugg mode
+			m_debug = false;
+			m_activateLine = false;
+			m_ship->activateCircle = false;
+			for (int i = 0; i < m_asteroids.size(); i++)
+				m_asteroids[i]->activateCircle = false;
+		}
+		if(m_inputManager.GetZ())
+			m_activateColision = true;
+		if (m_inputManager.GetSpace()) {
+			if (m_activateColision)
+				m_bullets.push_back(new Bullet(m_ship));
+		}
+	}
+
 	void App::Update()
 	{
 		double startTime = m_timer->GetElapsedTimeInSeconds();
 
 		// Update code goes here
+		Input();
 		UpdateEntity();
 		if (m_activateColision && !m_debug) {
 			for (int i = 0; i < m_asteroids.size(); i++) {

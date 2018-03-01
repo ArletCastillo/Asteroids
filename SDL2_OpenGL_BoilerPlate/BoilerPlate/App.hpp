@@ -15,6 +15,7 @@
 #include "Vector2.hpp"
 #include <vector>
 #include "Bullet.hpp"
+#include "InputManager.hpp"
 
 const int MAX_FRAME_COUNT = 15;
 const int X_AXIS_POSITION = 100;
@@ -50,12 +51,6 @@ namespace Engine
 		bool Init							( );
 		void Update							( );
 		void Render							( );
-		void CreateEntity					( );
-		void UpdateEntity					( );
-		void RenderEntity					( );
-		void CreateAsteroidWithPosition		(Vector2, int);
-		void UpdateFrame					();
-		void GetFrameRate					();
 	private:
 		/* =============================================================
 		 * PRIVATE FUNCTIONS
@@ -68,8 +63,13 @@ namespace Engine
 		void OnExit							( ) override;
 		void OnKeyDown						( SDL_KeyboardEvent keyBoardEvent ) override;
 		void OnKeyUp						( SDL_KeyboardEvent keyBoardEvent ) override;
-
-
+		void CreateEntity					( );
+		void UpdateEntity					( );
+		void RenderEntity					( );
+		void CreateAsteroidWithPosition		(Vector2, int);
+		void UpdateFrame					( );
+		void GetFrameRate					( );
+		void Input							( );
 		/* =============================================================
 		 * MEMBERS
 		 * ============================================================= */
@@ -95,6 +95,7 @@ namespace Engine
 		Vector2								m_collision;
 		std::vector<Vector2>				m_cpt_frames;
 		std::vector<Bullet*>				m_bullets;
+		InputManager						m_inputManager;
 	};
 }
 #endif /* GAME_HPP */
