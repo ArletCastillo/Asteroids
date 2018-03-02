@@ -7,11 +7,12 @@
 
 class Colors {
 	public:
-		Color Cherry_blossom();
-		Color Baby_blue();
-		Color Dark_red();
-		Color Dark_aqua();
+		Color CherryBlossom();
+		Color BabyBlue();
+		Color DarkRed();
+		Color DarkAqua();
 		Color Midnight();
+		Color Yellow();
 };
 
 #endif // !_COLORS_H_

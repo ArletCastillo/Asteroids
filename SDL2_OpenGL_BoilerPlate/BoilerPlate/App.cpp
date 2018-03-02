@@ -2,19 +2,17 @@
 #include <iostream>
 #include <algorithm>
 #include "Colors.hpp"
-#include "Player.hpp"
-#include "Asteroid.hpp"
-
-// OpenGL includes
-#include <GL/glew.h>
-#include <SDL_opengl.h>
-#include <SDL.h>
-#include <SDL_ttf.h>
 
 namespace Engine
 {
 	const float DESIRED_FRAME_RATE = 60.0f;
 	const float DESIRED_FRAME_TIME = 1.0f / DESIRED_FRAME_RATE;
+	const float INMORTALITY_SECONDS = 2.0f;
+	Colors background;
+	Colors line;
+	Colors text;
+	Color changeBackground(0.0f, 0.0f, 0.0f, 0.0f);
+	Color changeLine(1.0f, 1.0f, 1.0f, 1.0f);
 
 	void App::CreateEntity() {
 		m_ship = new Player();
@@ -23,6 +21,13 @@ namespace Engine
 
 	App::App(const std::string& title, const int width, const int height)
 		: m_title(title)
+		, m_numberOfAsteroids(3)
+		, m_sound(irrklang::createIrrKlangDevice())
+		, m_life(3)
+		, m_scores(0)
+		, m_limitFactor(INCREASE_LIFE)
+		, m_spawn(false)
+		, m_activateGameOver(true)
 		, m_activateColision(true)
 		, m_isShot(true)
 		, m_debug(false)
@@ -43,11 +48,18 @@ namespace Engine
 		}
 		m_current_frame_position = 0;
 		m_time = DESIRED_FRAME_RATE;
+		m_sound->setSoundVolume(0.5f);
+		m_rText->InitFont();
+		m_rText = new Text(m_fColor);
+		LoadEntity();
 	}
 
 	App::~App()
 	{
 		CleanupSDL();
+		EntityCleaner();
+		m_sound->removeAllSoundSources();
+		delete m_rText;
 	}
 
 	void App::Execute()
@@ -104,19 +116,23 @@ namespace Engine
 		{
 		case SDL_SCANCODE_W:
 			m_ship->activateThruster = true;
+			m_sound->play2D("sounds/thrust.wav");
 			m_inputManager.SetW(true);
 			break;
 		case SDL_SCANCODE_A:
 			m_inputManager.SetA(true);
 			break;
 		case SDL_SCANCODE_S:
-			m_inputManager.SetS(true);
+			if (!m_bFrame)
+				m_bFrame = true;
+			else
+				m_bFrame = false;
 			break;
 		case SDL_SCANCODE_D:
 			m_inputManager.SetD(true);
 			break;
 		case SDL_SCANCODE_Q:
-			m_asteroids.push_back(new Asteroid()); //spawns new
+			m_asteroids.push_back(new Asteroid()); //spawns new asteroid
 			break;
 		case SDL_SCANCODE_E:
 			if (m_asteroids.size()>0) //if the vector has asteroids, then remove them.
@@ -129,12 +145,19 @@ namespace Engine
 			m_inputManager.SetF(true);
 			break;
 		case SDL_SCANCODE_Z:
-			m_inputManager.SetZ(true);
+			if (m_life <= 0) {
+				EntityCleaner();
+				LoadEntity();
+				m_sound->stopAllSounds();
+				m_sound->removeAllSoundSources();
+			}
 			break;
 		case SDL_SCANCODE_SPACE:
-			if (m_activateColision)
+			if (m_activateColision) {
 				m_bullets.push_back(new Bullet(m_ship));
-			break;
+				m_sound->play2D("sounds/fire.wav");
+			}
+		break;
 		default:			
 			SDL_Log("%S was pressed...", keyBoardEvent.keysym.scancode);
 			break;
@@ -156,7 +179,6 @@ namespace Engine
 			m_inputManager.SetA(false);
 			break;
 		case SDL_SCANCODE_S:
-			m_inputManager.SetS(false);
 			break;
 		case SDL_SCANCODE_D:
 			m_inputManager.SetD(false);
@@ -169,6 +191,26 @@ namespace Engine
 			break;
 		case SDL_SCANCODE_Z:
 			m_inputManager.SetZ(false);
+			break;
+		case SDL_SCANCODE_X:
+			changeBackground = background.BabyBlue();
+			changeLine = line.Midnight();
+			break;
+		case SDL_SCANCODE_C:
+			changeBackground = background.CherryBlossom();
+			changeLine = line.DarkRed();
+			break;
+		case SDL_SCANCODE_V:
+			changeBackground = background.DarkAqua();
+			changeLine = line.BabyBlue();
+			break;
+		case SDL_SCANCODE_B:
+			changeBackground = background.DarkRed();
+			changeLine = line.CherryBlossom();
+			break;
+		case SDL_SCANCODE_N:
+			changeBackground = background.Midnight();
+			changeLine = line.BabyBlue();
 			break;
 		default:
 			//DO NOTHING
@@ -217,12 +259,6 @@ namespace Engine
 			m_ship->MoveForward();
 		if(m_inputManager.GetA())
 			m_ship->RotateLeft();
-		if (m_inputManager.GetS()) {
-			if (!m_bFrame)
-				m_bFrame = true;
-			else
-				m_bFrame = false;
-		}
 		if(m_inputManager.GetD())
 			m_ship->RotateRight();			 
 		if (m_inputManager.GetG()) {
@@ -244,6 +280,57 @@ namespace Engine
 			m_activateColision = true;
 	}
 
+	void App::IncreaseLives() {
+		if (m_scores - m_limitFactor > 0) {
+			m_life++;
+			m_limitFactor += INCREASE_LIFE;
+			m_sound->play2D("sounds/extraShip.wav");
+		}
+	}
+
+	void App::EntityCleaner(){
+		delete m_ship;
+		for (int i = 0; i < m_asteroids.size(); i++)
+			delete m_asteroids[i];
+		for (int i = 0; i < m_bullets.size(); i++)
+			delete m_bullets[i];
+		m_asteroids.clear();
+		m_bullets.clear();
+	}
+
+	void App::LoadEntity(){
+		m_debug = false;
+		m_bFrame = false;
+		m_spawn = false;
+		m_scores = 0;
+		m_life = 3;
+		m_limitFactor = INCREASE_LIFE;
+		m_activateColision = true;
+		m_isShot = true;
+		m_current_frame_position = 0;
+		m_time = DESIRED_FRAME_RATE;
+		m_ship = new Player();
+		m_asteroids.push_back(new Asteroid());
+	}
+
+	void App::RenderScore(){
+		float xAxis = 0.0f;
+		float yAxis = (m_height / 2) - 70;
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		m_rText->RenderText(std::to_string(m_scores), m_fColor, xAxis, yAxis, 36);
+	}
+
+	void App::RenderGameOver(){
+		if (m_life <= 0) {
+			float xAxis = 60000.0f;
+			float yAxis = 0.0f;
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			m_rText->RenderText("GAME OVER! PRESS Z TO RESTART", m_fColor, xAxis, yAxis, 36);
+		}
+	}
+
 	void App::Update()
 	{
 		double startTime = m_timer->GetElapsedTimeInSeconds();
@@ -251,6 +338,7 @@ namespace Engine
 		// Update code goes here
 		Input();
 		UpdateEntity();
+		IncreaseLives();
 		if (m_activateColision && !m_debug) {
 			for (int i = 0; i < m_asteroids.size(); i++) {
 				/* if the distance between the ship and the asteroid is smaller than the sum of their radius
@@ -259,6 +347,11 @@ namespace Engine
 					<= (m_ship->GetRadius() + m_asteroids[i]->GetRadius())) {
 					m_asteroids.erase(m_asteroids.begin() + i);
 					m_activateColision = false;
+					m_life--;
+					if (m_life > 0) {
+						m_spawn = true;
+						m_spawnTimer = m_timer->GetElapsedTimeInSeconds(); 
+					}
 				}
 			}
 		}
@@ -273,6 +366,14 @@ namespace Engine
 					x = true;
 					//checks if the asteroid is not small
 					if (m_asteroids[i]->GetSize() != 1) {
+						if (m_asteroids[i]->GetSize() == 4) {
+							m_sound->play2D("sounds/bangLarge.wav");
+							m_scores += 50;
+						}
+						else {
+							m_sound->play2D("sounds/bangMedium.wav");
+							m_scores += 25;
+						}
 						m_asteroids[i]->ChangeSize();
 						int newSize = m_asteroids[i]->GetSize();
 						CreateAsteroidWithPosition(m_asteroids[i]->GetOrigin(), m_asteroids[i]->GetSize());
@@ -280,6 +381,8 @@ namespace Engine
 					else {
 						//if it's small, then erases the asteroid
 						m_asteroids.erase(m_asteroids.begin() + i);
+						m_sound->play2D("sounds/bangSmall.wav");
+						m_scores += 15;
 					}
 					break;
 				}
@@ -297,6 +400,13 @@ namespace Engine
 				}
 			}
 		}
+		if (m_asteroids.size() <= 0) {
+			for(int i=0;i<m_numberOfAsteroids;i++)
+				m_asteroids.push_back(new Asteroid());
+			m_numberOfAsteroids++;
+		}
+		if (m_life <= 0)
+			m_activateColision = false;
 		double endTime = m_timer->GetElapsedTimeInSeconds();
 		m_time = DESIRED_FRAME_TIME - (endTime - startTime);
 		UpdateFrame();
@@ -308,6 +418,16 @@ namespace Engine
 			endTime = m_timer->GetElapsedTimeInSeconds();
 		}
 
+		if (m_spawn) {
+			if (endTime - m_spawnTimer < INMORTALITY_SECONDS) {
+				m_activateColision = false;
+			}
+			else{
+				m_spawn = false;
+				m_activateColision = true;
+			}
+		}
+
 		//double elapsedTime = endTime - startTime;        
 
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
@@ -316,8 +436,13 @@ namespace Engine
 	}
 
 	void App::RenderEntity() {
-		if (m_activateColision == true)
+		Colors spawnTime;
+		if (m_spawn)
+			glColor3f(spawnTime.Yellow().r, spawnTime.Yellow().g, spawnTime.Yellow().b);
+		if (m_life > 0) {
 			m_ship->Render();
+		}
+		glColor3f(changeLine.r, changeLine.g, changeLine.b);
 		for (int i = 0; i < m_asteroids.size(); i++) {
 			if (m_debug) 
 				m_asteroids[i]->activateCircle = true;
@@ -331,13 +456,30 @@ namespace Engine
 		}	
 	}
 
+	void App::RenderLives() {
+		std::vector<Vector2> livesPoints = m_ship->ObtainLives();
+		float size = 0.5f;
+		float hWidth = (float)m_width / 2.0f;
+		float hHeight = (float)m_height / 2.0f;
+		glLoadIdentity();
+		glTranslatef(hWidth, hHeight, 0.0f);
+		glColor3f(changeLine.r, changeLine.g, changeLine.b);
+		for (int i = 0; i < m_life; i++) {
+			glBegin(GL_LINE_LOOP);
+			for (int j = 0; j < livesPoints.size(); j++)
+				glVertex2f(size*livesPoints[j].x - 30 * (i + 1), size*livesPoints[j].y - 20);
+			glEnd();
+		}
+	}
+
 	void App::Render()
 	{
-		//glClearColor(0.1f, 0.1f, 0.15f, 1.0f)
-		Colors c;
-		glClearColor(c.Dark_aqua().r, c.Dark_aqua().g, c.Dark_aqua().b, c.Dark_aqua().a);
+		glClearColor(changeBackground.r, changeBackground.g, changeBackground.b, changeBackground.a);
+		glColor3f(changeLine.r, changeLine.g, changeLine.b);
 		glClear(GL_COLOR_BUFFER_BIT);
 		RenderEntity();
+		RenderLives();
+		RenderScore();
 		if(m_bFrame)
 			GetFrameRate();
 		for (int i = 0; i < m_asteroids.size(); i++) {
@@ -345,6 +487,8 @@ namespace Engine
 				m_asteroids[i]->DrawLine(m_ship->GetOrigin());
 			m_asteroids[i]->SetDrawLine(false);
 		}
+		if (m_activateGameOver)
+			RenderGameOver();
 		SDL_GL_SwapWindow(m_mainWindow);
 	}
 

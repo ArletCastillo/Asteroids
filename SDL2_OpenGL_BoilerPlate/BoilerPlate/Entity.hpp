@@ -4,6 +4,7 @@
 #define _ENTITY_H_
 
 #include "Vector2.hpp"
+#include <vector>
 
 const int SCREEN_WIDHT = 1136;
 const int SCREEN_HEIGHT = 640;

@@ -16,10 +16,21 @@
 #include <vector>
 #include "Bullet.hpp"
 #include "InputManager.hpp"
+#include <irrKlang.h>
+#include "Text.hpp"
+
+// OpenGL includes
+#include <GL/glew.h>
+#include <SDL_opengl.h>
+#include <SDL.h>
+#include <SDL_ttf.h>
 
 const int MAX_FRAME_COUNT = 15;
-const int X_AXIS_POSITION = 100;
-const int Y_AXIS_POSITION = -200;
+//used for the frame rate
+const float X_AXIS_POSITION = 100.0f;
+const float Y_AXIS_POSITION = -200.0f;
+
+const int INCREASE_LIFE = 500;
 
 namespace Engine
 {
@@ -70,6 +81,12 @@ namespace Engine
 		void UpdateFrame					( );
 		void GetFrameRate					( );
 		void Input							( );
+		void RenderLives					( );
+		void IncreaseLives					( );
+		void EntityCleaner					( );
+		void LoadEntity						( );
+		void RenderScore					( );
+		void RenderGameOver					( );
 		/* =============================================================
 		 * MEMBERS
 		 * ============================================================= */
@@ -77,14 +94,21 @@ namespace Engine
 		int									m_height;
 		int									m_nUpdates;
 		int									m_current_frame_position;
+		int									m_life;
+		int									m_scores;
+		int									m_limitFactor;
+		int									m_numberOfAsteroids;
 		double								m_lastFrameTime;
 		bool								m_activateLine;
 		bool								m_activateColision;
 		bool								m_isShot;
 		bool								m_debug;
+		bool								m_spawn;
+		double								m_spawnTimer;
 		bool								m_bFrame;
 		bool								m_graph;
 		float								m_time;
+		bool								m_activateGameOver;
 		std::string							m_title;
 		SDL_Window*							m_mainWindow;
 		SDL_GLContext						m_context;
@@ -96,6 +120,9 @@ namespace Engine
 		std::vector<Vector2>				m_cpt_frames;
 		std::vector<Bullet*>				m_bullets;
 		InputManager						m_inputManager;
+		irrklang::ISoundEngine*             m_sound;
+		Text*								m_rText;
+		SDL_Color							m_fColor;
 	};
 }
 #endif /* GAME_HPP */

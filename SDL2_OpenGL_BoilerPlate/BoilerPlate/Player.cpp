@@ -3,9 +3,6 @@
 #include <cmath>
 #include "MathUtilities.hpp"
 
-const float MAXIMUM_SPEED = 350.0f;
-const float ANGLE = 90.0f;
-
 void Player::ApplyImpulse(Vector2 impulse){
 	if (m_mass > 0) {
 		m_velocity.x += (impulse.x / m_mass) * cosf((m_angle + ANGLE) * (PI / 180));
@@ -37,6 +34,10 @@ void Player::Thruster() {
 	for (int i = 0; i < m_thrusterContainer.size(); i++)
 		glVertex2f(m_thrusterContainer[i].x, m_thrusterContainer[i].y);
 	glEnd();
+}
+
+std::vector<Vector2> Player::ObtainLives(){
+	return std::vector<Vector2>(m_shipContainer);
 }
 
 void Player::MoveForward(){
