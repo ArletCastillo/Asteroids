@@ -4,7 +4,6 @@
 #include "Colors.hpp"
 #include "Player.hpp"
 #include "Asteroid.hpp"
-#include <irrKlang.h>
 
 // OpenGL includes
 #include <GL/glew.h>
@@ -30,6 +29,7 @@ namespace Engine
 	App::App(const std::string& title, const int width, const int height)
 		: m_title(title)
 		, m_numberOfAsteroids(3)
+		, m_sound(irrklang::createIrrKlangDevice())
 		, m_life(3)
 		, m_spawn(false)
 		, m_activateColision(true)
@@ -113,6 +113,7 @@ namespace Engine
 		{
 		case SDL_SCANCODE_W:
 			m_ship->activateThruster = true;
+			m_sound->play2D("sounds/thrust.wav");
 			m_inputManager.SetW(true);
 			break;
 		case SDL_SCANCODE_A:
@@ -141,9 +142,11 @@ namespace Engine
 			m_inputManager.SetZ(true);
 			break;
 		case SDL_SCANCODE_SPACE:
-			if (m_activateColision)
+			if (m_activateColision) {
 				m_bullets.push_back(new Bullet(m_ship));
-			break;
+				m_sound->play2D("sounds/fire.wav");
+			}
+		break;
 		default:			
 			SDL_Log("%S was pressed...", keyBoardEvent.keysym.scancode);
 			break;
@@ -307,6 +310,10 @@ namespace Engine
 					x = true;
 					//checks if the asteroid is not small
 					if (m_asteroids[i]->GetSize() != 1) {
+						if (m_asteroids[i]->GetSize() == 4)
+							m_sound->play2D("sounds/bangLarge.wav");
+						else
+							m_sound->play2D("sounds/bangMedium.wav");
 						m_asteroids[i]->ChangeSize();
 						int newSize = m_asteroids[i]->GetSize();
 						CreateAsteroidWithPosition(m_asteroids[i]->GetOrigin(), m_asteroids[i]->GetSize());
@@ -314,6 +321,7 @@ namespace Engine
 					else {
 						//if it's small, then erases the asteroid
 						m_asteroids.erase(m_asteroids.begin() + i);
+						m_sound->play2D("sounds/bangSmall.wav");
 					}
 					break;
 				}

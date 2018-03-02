@@ -17,6 +17,7 @@
 #include "Bullet.hpp"
 #include "InputManager.hpp"
 #include "Color.hpp"
+#include <irrKlang.h>
 
 const int MAX_FRAME_COUNT = 15;
 const int X_AXIS_POSITION = 100;
@@ -103,6 +104,7 @@ namespace Engine
 		std::vector<Vector2>				m_cpt_frames;
 		std::vector<Bullet*>				m_bullets;
 		InputManager						m_inputManager;
+		irrklang::ISoundEngine				*m_sound;
 	};
 }
 #endif /* GAME_HPP */
