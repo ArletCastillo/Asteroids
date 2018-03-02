@@ -4,6 +4,7 @@
 #include "Colors.hpp"
 #include "Player.hpp"
 #include "Asteroid.hpp"
+#include <irrKlang.h>
 
 // OpenGL includes
 #include <GL/glew.h>
@@ -15,6 +16,7 @@ namespace Engine
 {
 	const float DESIRED_FRAME_RATE = 60.0f;
 	const float DESIRED_FRAME_TIME = 1.0f / DESIRED_FRAME_RATE;
+	const float INMORTALITY_SECONDS = 5.0f;
 	Colors background;
 	Colors line;
 	Color changeBackground(0.0f, 0.0f, 0.0f, 0.0f);
@@ -27,7 +29,9 @@ namespace Engine
 
 	App::App(const std::string& title, const int width, const int height)
 		: m_title(title)
-		, m_life(5)
+		, m_numberOfAsteroids(3)
+		, m_life(3)
+		, m_spawn(false)
 		, m_activateColision(true)
 		, m_isShot(true)
 		, m_debug(false)
@@ -121,7 +125,7 @@ namespace Engine
 			m_inputManager.SetD(true);
 			break;
 		case SDL_SCANCODE_Q:
-			m_asteroids.push_back(new Asteroid()); //spawns new
+			m_asteroids.push_back(new Asteroid()); //spawns new asteroid
 			break;
 		case SDL_SCANCODE_E:
 			if (m_asteroids.size()>0) //if the vector has asteroids, then remove them.
@@ -285,6 +289,10 @@ namespace Engine
 					m_asteroids.erase(m_asteroids.begin() + i);
 					m_activateColision = false;
 					m_life--;
+					if (m_life > 0) {
+						m_spawn = true;
+						m_spawnTimer = m_timer->GetElapsedTimeInSeconds(); 
+					}
 				}
 			}
 		}
@@ -323,6 +331,11 @@ namespace Engine
 				}
 			}
 		}
+		if (m_asteroids.size() <= 0) {
+			for(int i=0;i<m_numberOfAsteroids;i++)
+				m_asteroids.push_back(new Asteroid());
+			m_numberOfAsteroids++;
+		}
 		if (m_life <= 0)
 			m_activateColision = false;
 		double endTime = m_timer->GetElapsedTimeInSeconds();
@@ -336,6 +349,16 @@ namespace Engine
 			endTime = m_timer->GetElapsedTimeInSeconds();
 		}
 
+		if (m_spawn) {
+			if (endTime - m_spawnTimer < INMORTALITY_SECONDS) {
+				m_activateColision = false;
+			}
+			else{
+				m_spawn = false;
+				m_activateColision = true;
+			}
+		}
+
 		//double elapsedTime = endTime - startTime;        
 
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
@@ -344,8 +367,11 @@ namespace Engine
 	}
 
 	void App::RenderEntity() {
-		if (m_activateColision == true)
+		//Colors spawnTime;
+		if (m_life > 0) { //add colors -- make commit
 			m_ship->Render();
+			//glColor3f(spawnTime.Yellow().r, spawnTime.Yellow().g, spawnTime.Yellow().b);
+		}
 		for (int i = 0; i < m_asteroids.size(); i++) {
 			if (m_debug) 
 				m_asteroids[i]->activateCircle = true;
@@ -377,7 +403,6 @@ namespace Engine
 
 	void App::Render()
 	{
-		//glClearColor(0.1f, 0.1f, 0.15f, 1.0f)
 		Colors c;
 		glClearColor(changeBackground.r, changeBackground.g, changeBackground.b, changeBackground.a);
 		glColor3f(changeLine.r, changeLine.g, changeLine.b);

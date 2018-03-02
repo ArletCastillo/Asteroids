@@ -12,6 +12,7 @@ class Colors {
 		Color Dark_red();
 		Color Dark_aqua();
 		Color Midnight();
+		Color Yellow();
 };
 
 #endif // !_COLORS_H_

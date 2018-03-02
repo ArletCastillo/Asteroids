@@ -80,11 +80,14 @@ namespace Engine
 		int									m_nUpdates;
 		int									m_current_frame_position;
 		int									m_life;
+		int									m_numberOfAsteroids;
 		double								m_lastFrameTime;
 		bool								m_activateLine;
 		bool								m_activateColision;
 		bool								m_isShot;
 		bool								m_debug;
+		bool								m_spawn;
+		double								m_spawnTimer;
 		bool								m_bFrame;
 		bool								m_graph;
 		float								m_time;
