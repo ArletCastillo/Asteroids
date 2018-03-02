@@ -84,7 +84,9 @@ namespace Engine
 		void RenderLives					( );
 		void IncreaseLives					( );
 		void EntityCleaner					( );
+		void LoadEntity						( );
 		void RenderScore					( );
+		void RenderGameOver					( );
 		/* =============================================================
 		 * MEMBERS
 		 * ============================================================= */
@@ -106,6 +108,7 @@ namespace Engine
 		bool								m_bFrame;
 		bool								m_graph;
 		float								m_time;
+		bool								m_activateGameOver;
 		std::string							m_title;
 		SDL_Window*							m_mainWindow;
 		SDL_GLContext						m_context;

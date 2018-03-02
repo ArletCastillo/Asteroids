@@ -10,6 +10,7 @@ namespace Engine
 	const float INMORTALITY_SECONDS = 2.0f;
 	Colors background;
 	Colors line;
+	Colors text;
 	Color changeBackground(0.0f, 0.0f, 0.0f, 0.0f);
 	Color changeLine(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -26,6 +27,7 @@ namespace Engine
 		, m_scores(0)
 		, m_limitFactor(INCREASE_LIFE)
 		, m_spawn(false)
+		, m_activateGameOver(true)
 		, m_activateColision(true)
 		, m_isShot(true)
 		, m_debug(false)
@@ -49,6 +51,7 @@ namespace Engine
 		m_sound->setSoundVolume(0.5f);
 		m_rText->InitFont();
 		m_rText = new Text(m_fColor);
+		LoadEntity();
 	}
 
 	App::~App()
@@ -56,6 +59,7 @@ namespace Engine
 		CleanupSDL();
 		EntityCleaner();
 		m_sound->removeAllSoundSources();
+		delete m_rText;
 	}
 
 	void App::Execute()
@@ -141,7 +145,12 @@ namespace Engine
 			m_inputManager.SetF(true);
 			break;
 		case SDL_SCANCODE_Z:
-			m_inputManager.SetZ(true);
+			if (m_life <= 0) {
+				EntityCleaner();
+				LoadEntity();
+				m_sound->stopAllSounds();
+				m_sound->removeAllSoundSources();
+			}
 			break;
 		case SDL_SCANCODE_SPACE:
 			if (m_activateColision) {
@@ -289,12 +298,37 @@ namespace Engine
 		m_bullets.clear();
 	}
 
+	void App::LoadEntity(){
+		m_debug = false;
+		m_bFrame = false;
+		m_spawn = false;
+		m_scores = 0;
+		m_life = 3;
+		m_limitFactor = INCREASE_LIFE;
+		m_activateColision = true;
+		m_isShot = true;
+		m_current_frame_position = 0;
+		m_time = DESIRED_FRAME_RATE;
+		m_ship = new Player();
+		m_asteroids.push_back(new Asteroid());
+	}
+
 	void App::RenderScore(){
 		float xAxis = 0.0f;
 		float yAxis = (m_height / 2) - 70;
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		m_rText->RenderText(std::to_string(m_scores), m_fColor, xAxis, yAxis, 36);
+	}
+
+	void App::RenderGameOver(){
+		if (m_life <= 0) {
+			float xAxis = 60000.0f;
+			float yAxis = 0.0f;
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			m_rText->RenderText("GAME OVER! PRESS Z TO RESTART", m_fColor, xAxis, yAxis, 36);
+		}
 	}
 
 	void App::Update()
@@ -399,7 +433,6 @@ namespace Engine
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
 
 		m_nUpdates++;
-		std::cout << "SCORE: " << m_scores << std::endl;
 	}
 
 	void App::RenderEntity() {
@@ -454,6 +487,8 @@ namespace Engine
 				m_asteroids[i]->DrawLine(m_ship->GetOrigin());
 			m_asteroids[i]->SetDrawLine(false);
 		}
+		if (m_activateGameOver)
+			RenderGameOver();
 		SDL_GL_SwapWindow(m_mainWindow);
 	}
 
