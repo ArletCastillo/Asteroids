@@ -2,14 +2,6 @@
 #include <iostream>
 #include <algorithm>
 #include "Colors.hpp"
-#include "Player.hpp"
-#include "Asteroid.hpp"
-
-// OpenGL includes
-#include <GL/glew.h>
-#include <SDL_opengl.h>
-#include <SDL.h>
-#include <SDL_ttf.h>
 
 namespace Engine
 {
@@ -55,11 +47,15 @@ namespace Engine
 		m_current_frame_position = 0;
 		m_time = DESIRED_FRAME_RATE;
 		m_sound->setSoundVolume(0.5f);
+		m_rText->InitFont();
+		m_rText = new Text(m_fColor);
 	}
 
 	App::~App()
 	{
 		CleanupSDL();
+		EntityCleaner();
+		m_sound->removeAllSoundSources();
 	}
 
 	void App::Execute()
@@ -123,7 +119,10 @@ namespace Engine
 			m_inputManager.SetA(true);
 			break;
 		case SDL_SCANCODE_S:
-			m_inputManager.SetS(true);
+			if (!m_bFrame)
+				m_bFrame = true;
+			else
+				m_bFrame = false;
 			break;
 		case SDL_SCANCODE_D:
 			m_inputManager.SetD(true);
@@ -171,7 +170,6 @@ namespace Engine
 			m_inputManager.SetA(false);
 			break;
 		case SDL_SCANCODE_S:
-			m_inputManager.SetS(false);
 			break;
 		case SDL_SCANCODE_D:
 			m_inputManager.SetD(false);
@@ -186,24 +184,24 @@ namespace Engine
 			m_inputManager.SetZ(false);
 			break;
 		case SDL_SCANCODE_X:
-			changeBackground = background.Baby_blue();
+			changeBackground = background.BabyBlue();
 			changeLine = line.Midnight();
 			break;
 		case SDL_SCANCODE_C:
-			changeBackground = background.Cherry_blossom();
-			changeLine = line.Dark_red();
+			changeBackground = background.CherryBlossom();
+			changeLine = line.DarkRed();
 			break;
 		case SDL_SCANCODE_V:
-			changeBackground = background.Dark_aqua();
-			changeLine = line.Baby_blue();
+			changeBackground = background.DarkAqua();
+			changeLine = line.BabyBlue();
 			break;
 		case SDL_SCANCODE_B:
-			changeBackground = background.Dark_red();
-			changeLine = line.Cherry_blossom();
+			changeBackground = background.DarkRed();
+			changeLine = line.CherryBlossom();
 			break;
 		case SDL_SCANCODE_N:
 			changeBackground = background.Midnight();
-			changeLine = line.Baby_blue();
+			changeLine = line.BabyBlue();
 			break;
 		default:
 			//DO NOTHING
@@ -252,12 +250,6 @@ namespace Engine
 			m_ship->MoveForward();
 		if(m_inputManager.GetA())
 			m_ship->RotateLeft();
-		if (m_inputManager.GetS()) {
-			if (!m_bFrame)
-				m_bFrame = true;
-			else
-				m_bFrame = false;
-		}
 		if(m_inputManager.GetD())
 			m_ship->RotateRight();			 
 		if (m_inputManager.GetG()) {
@@ -285,6 +277,24 @@ namespace Engine
 			m_limitFactor += INCREASE_LIFE;
 			m_sound->play2D("sounds/extraShip.wav");
 		}
+	}
+
+	void App::EntityCleaner(){
+		delete m_ship;
+		for (int i = 0; i < m_asteroids.size(); i++)
+			delete m_asteroids[i];
+		for (int i = 0; i < m_bullets.size(); i++)
+			delete m_bullets[i];
+		m_asteroids.clear();
+		m_bullets.clear();
+	}
+
+	void App::RenderScore(){
+		float xAxis = 0.0f;
+		float yAxis = (m_height / 2) - 70;
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		m_rText->RenderText(std::to_string(m_scores), m_fColor, xAxis, yAxis, 36);
 	}
 
 	void App::Update()
@@ -431,7 +441,6 @@ namespace Engine
 
 	void App::Render()
 	{
-		Colors c;
 		glClearColor(changeBackground.r, changeBackground.g, changeBackground.b, changeBackground.a);
 		glColor3f(changeLine.r, changeLine.g, changeLine.b);
 		glClear(GL_COLOR_BUFFER_BIT);
