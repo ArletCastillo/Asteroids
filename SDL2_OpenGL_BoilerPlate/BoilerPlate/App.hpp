@@ -22,6 +22,7 @@
 const int MAX_FRAME_COUNT = 15;
 const int X_AXIS_POSITION = 100;
 const int Y_AXIS_POSITION = -200;
+const int INCREASE_LIFE = 500;
 
 namespace Engine
 {
@@ -73,6 +74,7 @@ namespace Engine
 		void GetFrameRate					( );
 		void Input							( );
 		void RenderLives					( );
+		void IncreaseLives					( );
 		/* =============================================================
 		 * MEMBERS
 		 * ============================================================= */
@@ -82,6 +84,7 @@ namespace Engine
 		int									m_current_frame_position;
 		int									m_life;
 		int									m_scores;
+		int									m_limitFactor;
 		int									m_numberOfAsteroids;
 		double								m_lastFrameTime;
 		bool								m_activateLine;

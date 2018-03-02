@@ -31,6 +31,8 @@ namespace Engine
 		, m_numberOfAsteroids(3)
 		, m_sound(irrklang::createIrrKlangDevice())
 		, m_life(3)
+		, m_scores(0)
+		, m_limitFactor(0)
 		, m_spawn(false)
 		, m_activateColision(true)
 		, m_isShot(true)
@@ -52,6 +54,7 @@ namespace Engine
 		}
 		m_current_frame_position = 0;
 		m_time = DESIRED_FRAME_RATE;
+		m_sound->setSoundVolume(0.5f);
 	}
 
 	App::~App()
@@ -276,6 +279,14 @@ namespace Engine
 			m_activateColision = true;
 	}
 
+	void App::IncreaseLives() {
+		if (m_scores - m_limitFactor > 0) {
+			m_life++;
+			m_limitFactor += INCREASE_LIFE;
+			m_sound->play2D("sounds/extraShip.wav");
+		}
+	}
+
 	void App::Update()
 	{
 		double startTime = m_timer->GetElapsedTimeInSeconds();
@@ -283,6 +294,7 @@ namespace Engine
 		// Update code goes here
 		Input();
 		UpdateEntity();
+		IncreaseLives();
 		if (m_activateColision && !m_debug) {
 			for (int i = 0; i < m_asteroids.size(); i++) {
 				/* if the distance between the ship and the asteroid is smaller than the sum of their radius
@@ -310,10 +322,14 @@ namespace Engine
 					x = true;
 					//checks if the asteroid is not small
 					if (m_asteroids[i]->GetSize() != 1) {
-						if (m_asteroids[i]->GetSize() == 4)
+						if (m_asteroids[i]->GetSize() == 4) {
 							m_sound->play2D("sounds/bangLarge.wav");
-						else
+							m_scores += 50;
+						}
+						else {
 							m_sound->play2D("sounds/bangMedium.wav");
+							m_scores += 25;
+						}
 						m_asteroids[i]->ChangeSize();
 						int newSize = m_asteroids[i]->GetSize();
 						CreateAsteroidWithPosition(m_asteroids[i]->GetOrigin(), m_asteroids[i]->GetSize());
@@ -322,6 +338,7 @@ namespace Engine
 						//if it's small, then erases the asteroid
 						m_asteroids.erase(m_asteroids.begin() + i);
 						m_sound->play2D("sounds/bangSmall.wav");
+						m_scores += 15;
 					}
 					break;
 				}
