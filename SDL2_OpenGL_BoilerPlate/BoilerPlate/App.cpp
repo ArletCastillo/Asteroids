@@ -16,7 +16,7 @@ namespace Engine
 {
 	const float DESIRED_FRAME_RATE = 60.0f;
 	const float DESIRED_FRAME_TIME = 1.0f / DESIRED_FRAME_RATE;
-	const float INMORTALITY_SECONDS = 5.0f;
+	const float INMORTALITY_SECONDS = 2.0f;
 	Colors background;
 	Colors line;
 	Color changeBackground(0.0f, 0.0f, 0.0f, 0.0f);
@@ -367,11 +367,13 @@ namespace Engine
 	}
 
 	void App::RenderEntity() {
-		//Colors spawnTime;
-		if (m_life > 0) { //add colors -- make commit
+		Colors spawnTime;
+		if (m_spawn)
+			glColor3f(spawnTime.Yellow().r, spawnTime.Yellow().g, spawnTime.Yellow().b);
+		if (m_life > 0) {
 			m_ship->Render();
-			//glColor3f(spawnTime.Yellow().r, spawnTime.Yellow().g, spawnTime.Yellow().b);
 		}
+		glColor3f(changeLine.r, changeLine.g, changeLine.b);
 		for (int i = 0; i < m_asteroids.size(); i++) {
 			if (m_debug) 
 				m_asteroids[i]->activateCircle = true;

@@ -80,6 +80,7 @@ namespace Engine
 		int									m_nUpdates;
 		int									m_current_frame_position;
 		int									m_life;
+		int									m_scores;
 		int									m_numberOfAsteroids;
 		double								m_lastFrameTime;
 		bool								m_activateLine;

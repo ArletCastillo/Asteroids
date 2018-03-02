@@ -3,6 +3,13 @@
 #include <SDL_opengl.h>
 #include "MathUtilities.hpp"
 #include <cmath>
+/*
+	add variable for scores
+	add add factor variable (limit)
+	add factor constant
+	add function to update: updates variable with the constant (if score and variable factor >= 0)
+	m_life++
+*/
 
 Asteroid::Asteroid() {
 	m_base = Vector2(rand(), rand());
