@@ -446,6 +446,7 @@ namespace Engine
 		glClear(GL_COLOR_BUFFER_BIT);
 		RenderEntity();
 		RenderLives();
+		RenderScore();
 		if(m_bFrame)
 			GetFrameRate();
 		for (int i = 0; i < m_asteroids.size(); i++) {
