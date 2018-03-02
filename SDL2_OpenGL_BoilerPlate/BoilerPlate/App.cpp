@@ -32,7 +32,7 @@ namespace Engine
 		, m_sound(irrklang::createIrrKlangDevice())
 		, m_life(3)
 		, m_scores(0)
-		, m_limitFactor(0)
+		, m_limitFactor(INCREASE_LIFE)
 		, m_spawn(false)
 		, m_activateColision(true)
 		, m_isShot(true)
@@ -389,6 +389,7 @@ namespace Engine
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
 
 		m_nUpdates++;
+		std::cout << "SCORE: " << m_scores << std::endl;
 	}
 
 	void App::RenderEntity() {
